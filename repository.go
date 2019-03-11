@@ -6,6 +6,7 @@
 package ycq
 
 import (
+	"errors"
 	"fmt"
 	"net/url"
 )
@@ -36,9 +37,13 @@ type repository struct {
 	eventFactory       EventMaker
 }
 
-func NewRepository(eventStore EventStore) *repository {
+func NewRepository(eventStore EventStore) (*repository, error) {
+	if (eventStore == nil){
+		return nil, errors.New("a valid eventstore is required.")
+	}
+
 	r := &repository{eventStore:eventStore}
-	return r
+	return r, nil
 }
 
 // SetAggregateFactory sets the aggregate factory that should be used to
