@@ -30,7 +30,7 @@ type StreamWriter interface {
 	// -1 : The stream should not exist at the time of writing. This write will create it.
 	//
 	// 0 : The stream should exist but it should be empty.
-	Append(expectedVersion *int, events ...*Event) error
+	Append(expectedVersion *int, events ...*EventMessage) error
 }
 
 

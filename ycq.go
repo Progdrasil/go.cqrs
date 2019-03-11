@@ -37,7 +37,7 @@ func NewUUID() string {
 // Int returns a pointer to int.
 //
 // There are a number of places where a pointer to int
-// is required such as expectedVersion argument on the Repository
+// is required such as expectedVersion argument on the repository
 // and this helper function makes keeps the code cleaner in these
 // cases.
 func Int(i int) *int {

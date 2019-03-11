@@ -14,7 +14,7 @@ import (
 // An event factory returns instances of an event given the event type
 // as a string.
 // An event factory is required during deserialisation of events by the
-// domain or Repository depending on your implementation.
+// domain or repository depending on your implementation.
 //
 // The domain will return a string describing the event type. To unmarshal
 // the contents of the persisted event which will typically be in some serialised
