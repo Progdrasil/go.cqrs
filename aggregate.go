@@ -47,7 +47,7 @@ func (a *AggregateBase) AggregateID() string {
 // instantiated or loaded from the repository.
 //
 // Importantly an aggregate with one event applied will be at version 0
-// this allows the aggregates to match the version in the eventstore where
+// this allows the aggregates to match the version in the domain where
 // the first event will be version 0.
 func (a *AggregateBase) OriginalVersion() int {
 	return a.version
@@ -57,7 +57,7 @@ func (a *AggregateBase) OriginalVersion() int {
 // instantiated or loaded from the repository.
 //
 // Importantly an aggregate with one event applied will be at version 0
-// this allows the aggregates to match the version in the eventstore where
+// this allows the aggregates to match the version in the domain where
 // the first event will be version 0.
 func (a *AggregateBase) CurrentVersion() int {
 	return a.version + len(a.changes)

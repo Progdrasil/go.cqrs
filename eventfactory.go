@@ -9,18 +9,18 @@ import (
 	"fmt"
 )
 
-// EventFactory is the interface that an event factory should implement.
+// EventMaker is the interface that an event factory should implement.
 //
 // An event factory returns instances of an event given the event type
 // as a string.
 // An event factory is required during deserialisation of events by the
-// eventstore or repository depending on your implementation.
+// domain or repository depending on your implementation.
 //
-// The eventstore will return a string describing the event type. To unmarshal
+// The domain will return a string describing the event type. To unmarshal
 // the contents of the persisted event which will typically be in some serialised
 // format such as JSON an instance of the event type will need to be created.
-type EventFactory interface {
-	GetEvent(string) interface{}
+type EventMaker interface {
+	MakeEvent(string) interface{}
 }
 
 // DelegateEventFactory uses delegate functions to instantiate event instances
@@ -50,7 +50,7 @@ func (t *DelegateEventFactory) RegisterDelegate(event interface{}, delegate func
 	return nil
 }
 
-// GetEvent returns an event instance given an event type as a string.
+// MakeEvent returns an event instance given an event type as a string.
 //
 // An appropriate delegate must be registered for the event type.
 // If an appropriate delegate is not registered, the method will return nil.

@@ -46,7 +46,7 @@ func (e *ErrUnexpected) Error() string {
 	return fmt.Sprintf("An unepected error occurred. %s", e.Err)
 }
 
-// ErrRepositoryUnavailable is returned when the eventstore is temporarily unavailable
+// ErrRepositoryUnavailable is returned when the domain is temporarily unavailable
 type ErrRepositoryUnavailable struct{}
 
 func (e *ErrRepositoryUnavailable) Error() string {
