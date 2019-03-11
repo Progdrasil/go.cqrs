@@ -15,28 +15,28 @@ import (
 // An aggregate factory is typically a dependency of the repository that will
 // delegate instantiation of aggregate instances to the Aggregate factory.
 type AggregateFactory interface {
-	GetAggregate(string, string) AggregateRoot
+	GetAggregate(string, string) Aggregate
 }
 
 // DelegateAggregateFactory is an implementation of the AggregateFactory interface
 // that supports registration of delegate functions to perform aggregate instantiation.
 type DelegateAggregateFactory struct {
-	delegates map[string]func(string) AggregateRoot
+	delegates map[string]func(string) Aggregate
 }
 
 // NewDelegateAggregateFactory contructs a new DelegateAggregateFactory
 func NewDelegateAggregateFactory() *DelegateAggregateFactory {
 	return &DelegateAggregateFactory{
-		delegates: make(map[string]func(string) AggregateRoot),
+		delegates: make(map[string]func(string) Aggregate),
 	}
 }
 
 // RegisterDelegate is used to register a new funtion for instantiation of an
 // aggregate instance.
 //
-// 	func(id string) AggregateRoot {return NewMyAggregateType(id)}
-// 	func(id string) AggregateRoot { return &MyAggregateType{AggregateBase:NewAggregateBase(id)} }
-func (t *DelegateAggregateFactory) RegisterDelegate(aggregate AggregateRoot, delegate func(string) AggregateRoot) error {
+// 	func(id string) Aggregate {return NewMyAggregateType(id)}
+// 	func(id string) Aggregate { return &MyAggregateType{AggregateBase:NewAggregateBase(id)} }
+func (t *DelegateAggregateFactory) RegisterDelegate(aggregate Aggregate, delegate func(string) Aggregate) error {
 	typeName := typeOf(aggregate)
 	if _, ok := t.delegates[typeName]; ok {
 		return fmt.Errorf("Factory delegate already registered for type: \"%s\"", typeName)
@@ -46,7 +46,7 @@ func (t *DelegateAggregateFactory) RegisterDelegate(aggregate AggregateRoot, del
 }
 
 // GetAggregate calls the delegate for the type specified and returns the result.
-func (t *DelegateAggregateFactory) GetAggregate(typeName string, id string) AggregateRoot {
+func (t *DelegateAggregateFactory) GetAggregate(typeName string, id string) Aggregate {
 	if f, ok := t.delegates[typeName]; ok {
 		return f(id)
 	}

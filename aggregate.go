@@ -5,8 +5,8 @@
 
 package ycq
 
-//AggregateRoot is the interface that all aggregates should implement
-type AggregateRoot interface {
+//Aggregate is the interface that all aggregates should implement
+type Aggregate interface {
 	AggregateID() string
 	OriginalVersion() int
 	CurrentVersion() int
@@ -17,7 +17,7 @@ type AggregateRoot interface {
 	ClearChanges()
 }
 
-// AggregateBase is a type that can be embedded in an AggregateRoot
+// AggregateBase is a type that can be embedded in an Aggregate
 // implementation to handle common aggragate behaviour
 //
 // All required methods to implement an aggregate are here, to implement the

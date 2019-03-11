@@ -29,7 +29,7 @@ func NewDelegateStreamNamer() *DelegateStreamNamer {
 
 // RegisterDelegate allows registration of a stream name delegate function for
 // the aggregates specified in the variadic aggregates argument.
-func (r *DelegateStreamNamer) RegisterDelegate(delegate func(string, string) string, aggregates ...AggregateRoot) error {
+func (r *DelegateStreamNamer) RegisterDelegate(delegate func(string, string) string, aggregates ...Aggregate) error {
 	for _, aggregate := range aggregates {
 		typeName := typeOf(aggregate)
 		if _, ok := r.delegates[typeName]; ok {

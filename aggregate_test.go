@@ -66,7 +66,7 @@ type SomeAggregate struct {
 	events []EventMessage
 }
 
-func NewSomeAggregate(id string) AggregateRoot {
+func NewSomeAggregate(id string) Aggregate {
 	return &SomeAggregate{
 		AggregateBase: NewAggregateBase(id),
 	}
@@ -85,7 +85,7 @@ type SomeOtherAggregate struct {
 	changes []EventMessage
 }
 
-func NewSomeOtherAggregate(id string) AggregateRoot {
+func NewSomeOtherAggregate(id string) Aggregate {
 	return &SomeOtherAggregate{
 		AggregateBase: NewAggregateBase(id),
 	}

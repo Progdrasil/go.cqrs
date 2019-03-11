@@ -28,7 +28,7 @@ func (s *DelegateAggregateFactorySuite) TestNewAggregateFactory(c *C) {
 
 func (s *DelegateAggregateFactorySuite) TestCanRegisterAggregateFactoryDelegate(c *C) {
 	err := s.factory.RegisterDelegate(&SomeAggregate{},
-		func(id string) AggregateRoot { return NewSomeAggregate(id) })
+		func(id string) Aggregate { return NewSomeAggregate(id) })
 
 	c.Assert(err, IsNil)
 
@@ -40,12 +40,12 @@ func (s *DelegateAggregateFactorySuite) TestCanRegisterAggregateFactoryDelegate(
 
 func (s *DelegateAggregateFactorySuite) TestDuplicateAggregateFactoryRegistrationReturnsAnError(c *C) {
 	err := s.factory.RegisterDelegate(&SomeAggregate{},
-		func(id string) AggregateRoot { return NewSomeAggregate(id) })
+		func(id string) Aggregate { return NewSomeAggregate(id) })
 
 	c.Assert(err, IsNil)
 
 	err = s.factory.RegisterDelegate(&SomeAggregate{},
-		func(id string) AggregateRoot { return NewSomeAggregate(id) })
+		func(id string) Aggregate { return NewSomeAggregate(id) })
 
 	c.Assert(err, NotNil)
 	c.Assert(err,
@@ -56,7 +56,7 @@ func (s *DelegateAggregateFactorySuite) TestDuplicateAggregateFactoryRegistratio
 
 func (s *DelegateAggregateFactorySuite) TestCanGetAggregateInstanceFromString(c *C) {
 	_ = s.factory.RegisterDelegate(&SomeAggregate{},
-		func(id string) AggregateRoot { return NewSomeAggregate(id) })
+		func(id string) Aggregate { return NewSomeAggregate(id) })
 
 	id := NewUUID()
 	ev := s.factory.GetAggregate(typeOf(&SomeAggregate{}), id)

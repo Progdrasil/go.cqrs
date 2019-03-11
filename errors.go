@@ -17,7 +17,7 @@ func (e *ErrCommandExecution) Error() string {
 // when events are persisted to a stream and the version of the stream does not match
 // the expected version.
 type ErrConcurrencyViolation struct {
-	Aggregate       AggregateRoot
+	Aggregate       Aggregate
 	ExpectedVersion *int
 	StreamName      string
 }
