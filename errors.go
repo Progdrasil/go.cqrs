@@ -100,7 +100,6 @@ func (e ErrTemporarilyUnavailable) Error() string {
 	return "Server Is Not Ready"
 }
 
-
 // ErrBadRequest is returned when the server returns a bad request error
 type ErrBadRequest struct {
 	ErrorResponse string

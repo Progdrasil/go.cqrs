@@ -7,7 +7,6 @@ package ycq
 
 import (
 	"fmt"
-	"github.com/jetbasrawi/go.geteventstore"
 	"net/url"
 )
 
@@ -29,7 +28,7 @@ type DomainRepository interface {
 	SetStreamNameDelegate(delegate StreamNamer)
 }
 
-type Repository struct {
+type repository struct {
 	eventStore         EventStore
 	eventBus           EventBus
 	streamNameDelegate StreamNamer
@@ -37,8 +36,9 @@ type Repository struct {
 	eventFactory       EventMaker
 }
 
-func (r *Repository) NewRepository(eventStore EventStore) *Repository {
-
+func NewRepository(eventStore EventStore) *repository {
+	r := &repository{eventStore:eventStore}
+	return r
 }
 
 // SetAggregateFactory sets the aggregate factory that should be used to
@@ -46,7 +46,7 @@ func (r *Repository) NewRepository(eventStore EventStore) *Repository {
 //
 // Only one AggregateFactory can be registered at any one time.
 // Any registration will overwrite the provious registration.
-func (r *Repository) SetAggregateFactory(factory AggregateFactory) {
+func (r *repository) SetAggregateFactory(factory AggregateFactory) {
 	r.aggregateFactory = factory
 }
 
@@ -55,12 +55,12 @@ func (r *Repository) SetAggregateFactory(factory AggregateFactory) {
 //
 // Only one event factory can be set at a time. Any subsequent registration will
 // overwrite the previous factory.
-func (r *Repository) SetEventFactory(factory EventMaker) {
+func (r *repository) SetEventFactory(factory EventMaker) {
 	r.eventFactory = factory
 }
 
 // SetStreamNameDelegate sets the stream name delegate
-func (r *Repository) SetStreamNameDelegate(delegate StreamNamer) {
+func (r *repository) SetStreamNameDelegate(delegate StreamNamer) {
 	r.streamNameDelegate = delegate
 }
 
@@ -69,7 +69,7 @@ func (r *Repository) SetStreamNameDelegate(delegate StreamNamer) {
 //
 // The aggregate type and id will be passed to the configured StreamNamer to
 // get the stream name.
-func (r *Repository) Load(aggregateType, id string) (AggregateRoot, error) {
+func (r *repository) Load(aggregateType, id string) (AggregateRoot, error) {
 
 	if r.aggregateFactory == nil {
 		return nil, fmt.Errorf("The common domain repository has no Aggregate Factory.")
@@ -131,7 +131,7 @@ func (r *Repository) Load(aggregateType, id string) (AggregateRoot, error) {
 }
 
 // Save persists an aggregate
-func (r *GetEventStoreCommonDomainRepo) Save(aggregate AggregateRoot, expectedVersion *int) error {
+func (r *repository) Save(aggregate AggregateRoot, expectedVersion *int) error {
 
 	if r.streamNameDelegate == nil {
 		return fmt.Errorf("The common domain repository has no stream name delagate.")
@@ -146,12 +146,12 @@ func (r *GetEventStoreCommonDomainRepo) Save(aggregate AggregateRoot, expectedVe
 
 	if len(resultEvents) > 0 {
 
-		evs := make([]*goes.Event, len(resultEvents))
+		evs := make([]*Event, len(resultEvents))
 
 		for k, v := range resultEvents {
 			//TODO: There is no test for this code
 			v.SetHeader("AggregateID", aggregate.AggregateID())
-			evs[k] = goes.NewEvent("", v.EventType(), v.Event(), v.GetHeaders())
+			evs[k] = NewEvent("", v.EventType(), v.Event(), v.GetHeaders())
 		}
 
 		streamWriter := r.eventStore.StreamWriter(streamName)
@@ -159,11 +159,11 @@ func (r *GetEventStoreCommonDomainRepo) Save(aggregate AggregateRoot, expectedVe
 		switch e := err.(type) {
 		case nil:
 			break
-		case *goes.ErrConcurrencyViolation:
+		case ErrConcurrencyViolation:
 			return &ErrConcurrencyViolation{Aggregate: aggregate, ExpectedVersion: expectedVersion, StreamName: streamName}
-		case *goes.ErrUnauthorized:
+		case ErrUnauthorized:
 			return &ErrUnauthorized{}
-		case *goes.ErrTemporarilyUnavailable:
+		case ErrTemporarilyUnavailable:
 			return &ErrRepositoryUnavailable{}
 		default:
 			return &ErrUnexpected{Err: e}
