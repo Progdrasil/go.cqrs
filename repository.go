@@ -98,19 +98,19 @@ func (r *Repository) Load(aggregateType, id string) (AggregateRoot, error) {
 		switch err := stream.Err().(type) {
 		case nil:
 			break
-		case *url.Error, *goes.ErrTemporarilyUnavailable:
+		case *url.Error, ErrTemporarilyUnavailable:
 			return nil, &ErrRepositoryUnavailable{}
-		case *goes.ErrNoMoreEvents:
+		case ErrNoMoreEvents:
 			return aggregate, nil
-		case *goes.ErrUnauthorized:
+		case ErrUnauthorized:
 			return nil, &ErrUnauthorized{}
-		case *goes.ErrNotFound:
+		case ErrNotFound:
 			return nil, &ErrAggregateNotFound{AggregateType: aggregateType, AggregateID: id}
 		default:
 			return nil, &ErrUnexpected{Err: err}
 		}
 
-		event := r.eventFactory.MakeEvent(stream.Event().EventType())
+		event := r.eventFactory.MakeEvent(stream.EventType())
 
 		//TODO: No test for meta
 		meta := make(map[string]string)
@@ -118,7 +118,7 @@ func (r *Repository) Load(aggregateType, id string) (AggregateRoot, error) {
 		if stream.Err() != nil {
 			return nil, stream.Err()
 		}
-		em := NewEventMessage(id, event, Int(stream.Event().Version()))
+		em := NewEventMessage(id, event, Int(stream.Version()))
 		for k, v := range meta {
 			em.SetHeader(k, v)
 		}
@@ -154,7 +154,7 @@ func (r *GetEventStoreCommonDomainRepo) Save(aggregate AggregateRoot, expectedVe
 			evs[k] = goes.NewEvent("", v.EventType(), v.Event(), v.GetHeaders())
 		}
 
-		streamWriter := r.eventStore.NewStreamWriter(streamName)
+		streamWriter := r.eventStore.StreamWriter(streamName)
 		err := streamWriter.Append(expectedVersion, evs...)
 		switch e := err.(type) {
 		case nil:

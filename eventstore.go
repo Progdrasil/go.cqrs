@@ -11,14 +11,9 @@ type StreamReader interface {
 	Next() bool
 	Err() error
 	Scan(e interface{}, m interface{})
-	Version() int
-	NextVersion(version int)
-	Event() EventStoreRecord
-}
-
-type EventStoreRecord interface {
 	EventType() string
 	Version() int
+	NextVersion(version int)
 }
 
 type StreamWriter interface {
@@ -42,36 +37,6 @@ type StreamWriter interface {
 type EventStore interface {
 	StreamReader(streamName string) StreamReader
 	StreamWriter(streamName string) StreamWriter
-}
-
-
-// EventResponse encapsulates the response for an event reflecting the atom
-// response returned from the server which contains data in addition to the
-// actual event when requested as content type application/vnd.domain.atom+json
-//
-// For more information on the server response see:
-// http://docs.geteventstore.com/http-api/latest/reading-streams/
-type EventResponse struct {
-	Title   string
-	ID      string
-	Updated TimeStr
-	Summary string
-	event   *Event
-}
-
-func (e *EventResponse) Event() *Event {
-	return e.event
-}
-
-// PrettyPrint renders an indented json view of the EventResponse.
-func (e *EventResponse) PrettyPrint() string {
-
-	b, err := json.MarshalIndent(e, "", "	")
-	if err != nil {
-		panic(err)
-	}
-	return string(b)
-
 }
 
 // Event encapsulates the data of an domain event.
@@ -153,3 +118,4 @@ func typeOf(i interface{}) string {
 	}
 	return reflect.TypeOf(i).Elem().Name()
 }
+

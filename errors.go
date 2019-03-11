@@ -27,8 +27,7 @@ func (e *ErrConcurrencyViolation) Error() string {
 }
 
 // ErrUnauthorized is returned when a request to the repository is not authorized
-type ErrUnauthorized struct {
-}
+type ErrUnauthorized struct {}
 
 func (e *ErrUnauthorized) Error() string {
 	return "Not authorized."
@@ -64,3 +63,55 @@ func (e *ErrAggregateNotFound) Error() string {
 		e.AggregateType,
 		e.AggregateID)
 }
+
+// ErrNoMoreEvents is returned when there are no events to return
+// from a request to a stream.
+type ErrNoMoreEvents struct{}
+
+func (e ErrNoMoreEvents) Error() string {
+	return "There are no more events to load."
+}
+
+// ErrNotFound is returned when a stream is not found.
+type ErrNotFound struct {
+	ErrorResponse string
+}
+
+func (e ErrNotFound) Error() string {
+	return "The stream does not exist."
+}
+
+// ErrDeleted is returned when a request is made to a stream that
+// has been hard deleted.
+type ErrDeleted struct {
+	ErrorResponse string
+}
+
+func (e ErrDeleted) Error() string {
+	return "The stream has was deleted."
+}
+
+// ErrTemporarilyUnavailable is returned when the server returns ServiceUnavailable.
+//
+// This error may be returned if a request is made to the server during startup. When
+// the server starts up initially and the client is completely unable to connect to the
+// server a *url.Error will be returned. Once the server is up but not ready to serve
+// requests a ServiceUnavailable error will be returned for a brief period.
+type ErrTemporarilyUnavailable struct {
+	ErrorResponse string
+}
+
+func (e ErrTemporarilyUnavailable) Error() string {
+	return "Server Is Not Ready"
+}
+
+
+// ErrBadRequest is returned when the server returns a bad request error
+type ErrBadRequest struct {
+	ErrorResponse string
+}
+
+func (e ErrBadRequest) Error() string {
+	return "Bad request."
+}
+
