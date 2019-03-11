@@ -2,8 +2,6 @@ package ycq
 
 import (
 	"encoding/json"
-	"github.com/jetbasrawi/go.cqrs/internal/uuid"
-	"reflect"
 	"time"
 )
 
@@ -106,16 +104,4 @@ func NewEvent(eventID, eventType string, data interface{}, meta interface{}) *Ev
 	return e
 }
 
-// NewUUID returns a new V4 uuid as a string.
-func NewUUID() string {
-	return uuid.NewV4().String()
-}
-
-// typeOf is a helper to get the names of types.
-func typeOf(i interface{}) string {
-	if i == nil {
-		return ""
-	}
-	return reflect.TypeOf(i).Elem().Name()
-}
 
