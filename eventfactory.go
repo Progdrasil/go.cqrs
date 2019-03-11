@@ -54,7 +54,7 @@ func (t *DelegateEventFactory) RegisterDelegate(event interface{}, delegate func
 //
 // An appropriate delegate must be registered for the event type.
 // If an appropriate delegate is not registered, the method will return nil.
-func (t *DelegateEventFactory) GetEvent(typeName string) interface{} {
+func (t *DelegateEventFactory) MakeEvent(typeName string) interface{} {
 	if f, ok := t.eventFactories[typeName]; ok {
 		return f()
 	}
