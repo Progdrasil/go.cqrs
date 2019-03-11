@@ -10,9 +10,9 @@ import (
 )
 
 // AggregateFactory returns aggregate instances of a specified type with the
-// AggregateID set to the uuid provided.
+// StreamName set to the uuid provided.
 //
-// An aggregate factory is typically a dependency of the repository that will
+// An aggregate factory is typically a dependency of the Repository that will
 // delegate instantiation of aggregate instances to the Aggregate factory.
 type AggregateFactory interface {
 	GetAggregate(string, string) AggregateRoot

@@ -8,7 +8,7 @@ package ycq
 // CommandMessage is the interface that a command message must implement.
 type CommandMessage interface {
 
-	// AggregateID returns the ID of the Aggregate that the command relates to
+	// StreamName returns the ID of the Aggregate that the command relates to
 	AggregateID() string
 
 	// Headers returns the key value collection of headers for the command.
@@ -45,7 +45,7 @@ func (c *CommandDescriptor) CommandType() string {
 	return typeOf(c.command)
 }
 
-// AggregateID returns the ID of the aggregate that the command relates to.
+// StreamName returns the ID of the aggregate that the command relates to.
 func (c *CommandDescriptor) AggregateID() string {
 	return c.id
 }

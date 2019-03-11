@@ -5,10 +5,10 @@
 
 package ycq
 
-// EventMessage is the interface that a command must implement.
+// EventMessage is the interface that an event must implement.
 type EventMessage interface {
 
-	// AggregateID returns the ID of the Aggregate that the event relates to
+	// StreamName returns the ID of the Aggregate that the event relates to
 	AggregateID() string
 
 	// GetHeaders returns the key value collection of headers for the event.
@@ -53,7 +53,7 @@ func (c *EventDescriptor) EventType() string {
 	return typeOf(c.event)
 }
 
-// AggregateID returns the ID of the Aggregate that the event relates to.
+// StreamName returns the ID of the Aggregate that the event relates to.
 func (c *EventDescriptor) AggregateID() string {
 	return c.id
 }

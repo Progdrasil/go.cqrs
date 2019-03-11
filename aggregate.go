@@ -38,13 +38,13 @@ func NewAggregateBase(id string) *AggregateBase {
 	}
 }
 
-// AggregateID returns the AggregateID
+// StreamName returns the StreamName
 func (a *AggregateBase) AggregateID() string {
 	return a.id
 }
 
 // OriginalVersion returns the version of the aggregate as it was when it was
-// instantiated or loaded from the repository.
+// instantiated or loaded from the Repository.
 //
 // Importantly an aggregate with one event applied will be at version 0
 // this allows the aggregates to match the version in the domain where
@@ -54,7 +54,7 @@ func (a *AggregateBase) OriginalVersion() int {
 }
 
 // CurrentVersion returns the version of the aggregate as it was when it was
-// instantiated or loaded from the repository.
+// instantiated or loaded from the Repository.
 //
 // Importantly an aggregate with one event applied will be at version 0
 // this allows the aggregates to match the version in the domain where

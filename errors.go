@@ -23,10 +23,10 @@ type ErrConcurrencyViolation struct {
 }
 
 func (e *ErrConcurrencyViolation) Error() string {
-	return fmt.Sprintf("ConcurrencyError: AggregateID: %s ExpectedVersion: %d StreamName: %s", e.Aggregate.AggregateID(), *e.ExpectedVersion, e.StreamName)
+	return fmt.Sprintf("ConcurrencyError: StreamName: %s ExpectedVersion: %d StreamName: %s", e.Aggregate.AggregateID(), *e.ExpectedVersion, e.StreamName)
 }
 
-// ErrUnauthorized is returned when a request to the repository is not authorized
+// ErrUnauthorized is returned when a request to the Repository is not authorized
 type ErrUnauthorized struct {}
 
 func (e *ErrUnauthorized) Error() string {
@@ -49,10 +49,10 @@ func (e *ErrUnexpected) Error() string {
 type ErrRepositoryUnavailable struct{}
 
 func (e *ErrRepositoryUnavailable) Error() string {
-	return "The repository is temporarily unavailable."
+	return "The Repository is temporarily unavailable."
 }
 
-// ErrAggregateNotFound error returned when an aggregate was not found in the repository.
+// ErrAggregateNotFound error returned when an aggregate was not found in the Repository.
 type ErrAggregateNotFound struct {
 	AggregateID   string
 	AggregateType string
