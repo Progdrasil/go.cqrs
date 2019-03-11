@@ -91,12 +91,7 @@ func (e ErrDeleted) Error() string {
 	return "The stream has was deleted."
 }
 
-// ErrTemporarilyUnavailable is returned when the server returns ServiceUnavailable.
-//
-// This error may be returned if a request is made to the server during startup. When
-// the server starts up initially and the client is completely unable to connect to the
-// server a *url.Error will be returned. Once the server is up but not ready to serve
-// requests a ServiceUnavailable error will be returned for a brief period.
+// ErrTemporarilyUnavailable is returned when the eventstore is temporarily unavailable.
 type ErrTemporarilyUnavailable struct {
 	ErrorResponse string
 }
