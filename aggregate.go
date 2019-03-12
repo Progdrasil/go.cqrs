@@ -5,6 +5,8 @@
 
 package ycq
 
+type AggregateType string
+
 //Aggregate is the interface that all aggregates should implement
 type Aggregate interface {
 	AggregateID() string
