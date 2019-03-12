@@ -12,7 +12,7 @@
 // in C# and uses Generics where generics are not available in Go.
 // This implementation instead uses interfaces to deal with types in a generic manner
 // and used delegate functions to instantiate specific types.
-package ycq
+package cqrs
 
 import (
 	"reflect"

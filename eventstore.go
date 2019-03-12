@@ -1,4 +1,4 @@
-package ycq
+package cqrs
 
 import (
 	"encoding/json"
