@@ -5,7 +5,9 @@
 
 package cqrs
 
-type AggregateType string
+type AggregateType struct {
+	Name string
+}
 
 //Aggregate is the interface that all aggregates should implement
 type Aggregate interface {
