@@ -9,8 +9,9 @@ type AggregateType struct {
 	Name string
 }
 
-func MakeAggregateType(i interface{}) string {
-	return typeOf(i)
+func MakeAggregateType(i interface{}) AggregateType {
+	t := typeOf(i)
+	return AggregateType{Name: t}
 }
 
 //Aggregate is the interface that all aggregates should implement
