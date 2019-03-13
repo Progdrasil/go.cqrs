@@ -50,7 +50,7 @@ func (s *EventSuite) TestShouldGetTypeOfEvent(c *C) {
 //TODO: Do i need this still?
 //func (s *EventSuite) TestShouldGetTypeOfAggregate(c *C) {
 //em := &EventMessage{aggregate: &SomeAggregate{}}
-//c.Assert(em.AggregateType(), Equals, "SomeAggregate")
+//c.Assert(em.Type(), Equals, "SomeAggregate")
 //}
 
 func (s *EventSuite) TestShouldGetEventVersion(c *C) {

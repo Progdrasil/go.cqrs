@@ -5,19 +5,12 @@
 
 package cqrs
 
-type EventVersion struct {
-	Number int
-}
-
-type EventType struct {
-	Name string
-}
 
 // EventMessage is the interface that an event must implement.
 type EventMessage interface {
 
 	// StreamName returns the ID of the Aggregate that the event relates to
-	AggregateID() AggregateId
+	AggregateID() string
 
 	// GetHeaders returns the key value collection of headers for the event.
 	//
@@ -32,22 +25,22 @@ type EventMessage interface {
 	Event() interface{}
 
 	// EventType returns a string descriptor of the command name
-	EventType() EventType
+	EventType() string
 
 	// number returns the version of the event
-	Version() *EventVersion
+	Version() *int
 }
 
 // EventDescriptor is an implementation of the event message interface.
 type EventDescriptor struct {
-	id      AggregateId
+	id      string
 	event   interface{}
 	headers map[string]interface{}
-	version *EventVersion
+	version *int
 }
 
 // NewEventMessage returns a new event descriptor
-func NewEventMessage(aggregateID AggregateId, event interface{}, version *EventVersion) *EventDescriptor {
+func NewEventMessage(aggregateID string, event interface{}, version *int) *EventDescriptor {
 	return &EventDescriptor{
 		id:      aggregateID,
 		event:   event,
@@ -57,12 +50,12 @@ func NewEventMessage(aggregateID AggregateId, event interface{}, version *EventV
 }
 
 // EventType returns the name of the event type as a string.
-func (c *EventDescriptor) EventType() EventType {
-	return EventType{typeOf(c.event)}
+func (c *EventDescriptor) EventType() string {
+	return typeOf(c.event)
 }
 
 // StreamName returns the ID of the Aggregate that the event relates to.
-func (c *EventDescriptor) AggregateID() AggregateId {
+func (c *EventDescriptor) AggregateID() string {
 	return c.id
 }
 
@@ -82,6 +75,6 @@ func (c *EventDescriptor) Event() interface{} {
 }
 
 // number returns the version of the event
-func (c *EventDescriptor) Version() *EventVersion {
+func (c *EventDescriptor) Version() *int {
 	return c.version
 }

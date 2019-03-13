@@ -7,18 +7,6 @@ package cqrs
 
 import "github.com/jetbasrawi/go.cqrs/internal/uuid"
 
-type AggregateType struct {
-	name string
-}
-
-func NewAggregateType(i interface{}) AggregateType {
-	t := typeOf(i)
-	return AggregateType{name: t}
-}
-
-func (t *AggregateType) AggregateTypeName() string {
-	return t.name
-}
 
 type AggregateId struct {
 	stringId string
@@ -32,7 +20,7 @@ func NewAggregateId(id string) AggregateId {
 	}
 }
 
-func (id *AggregateId) AggregateIdString() string {
+func (id *AggregateId) IdString() string {
 	return id.stringId
 }
 
