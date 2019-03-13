@@ -9,11 +9,15 @@ type EventVersion struct {
 	Number int
 }
 
+type EventType struct {
+	Name string
+}
+
 // EventMessage is the interface that an event must implement.
 type EventMessage interface {
 
 	// StreamName returns the ID of the Aggregate that the event relates to
-	AggregateID() string
+	AggregateID() AggregateId
 
 	// GetHeaders returns the key value collection of headers for the event.
 	//
@@ -28,7 +32,7 @@ type EventMessage interface {
 	Event() interface{}
 
 	// EventType returns a string descriptor of the command name
-	EventType() string
+	EventType() EventType
 
 	// Number returns the version of the event
 	Version() *EventVersion

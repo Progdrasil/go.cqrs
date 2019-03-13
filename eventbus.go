@@ -13,13 +13,13 @@ type EventBus interface {
 
 // InternalEventBus provides a lightweight in process event bus
 type InternalEventBus struct {
-	eventHandlers map[string]map[EventHandler]struct{}
+	eventHandlers map[EventType]map[EventHandler]struct{}
 }
 
 // NewInternalEventBus constructs a new InternalEventBus
 func NewInternalEventBus() *InternalEventBus {
 	b := &InternalEventBus{
-		eventHandlers: make(map[string]map[EventHandler]struct{}),
+		eventHandlers: make(map[EventType]map[EventHandler]struct{}),
 	}
 	return b
 }
@@ -37,17 +37,18 @@ func (b *InternalEventBus) PublishEvent(event EventMessage) {
 // variadic events parameter.
 func (b *InternalEventBus) AddHandler(handler EventHandler, events ...interface{}) {
 
+	var et *EventType
 	for _, event := range events {
-		typeName := typeOf(event)
+		et = &EventType{typeOf(event)}
 
 		// There can be multiple handlers for any event.
 		// Here we check that a map is initialized to hold these handlers
 		// for a given type. If not we create one.
-		if _, ok := b.eventHandlers[typeName]; !ok {
-			b.eventHandlers[typeName] = make(map[EventHandler]struct{})
+		if _, ok := b.eventHandlers[*et]; !ok {
+			b.eventHandlers[*et] = make(map[EventHandler]struct{})
 		}
 
 		// Add this handler to the collection of handlers for the type.
-		b.eventHandlers[typeName][handler] = struct{}{}
+		b.eventHandlers[*et][handler] = struct{}{}
 	}
 }
