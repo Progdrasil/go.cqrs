@@ -13,7 +13,7 @@ type Aggregate interface {
 	OriginalVersion() int
 	CurrentVersion(int) int
 	IncrementVersion(int)
-	Apply(EventMessage, bool)
+	Apply(EventMessage)
 	TrackChange(EventMessage)
 	GetChanges() []EventMessage
 	ClearChanges()
