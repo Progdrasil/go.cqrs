@@ -11,8 +11,8 @@ package cqrs
 type Aggregate interface {
 	AggregateID() string
 	OriginalVersion() int
-	CurrentVersion() int
-	IncrementVersion()
+	CurrentVersion(int) int
+	IncrementVersion(int)
 	Apply(EventMessage, bool)
 	TrackChange(EventMessage)
 	GetChanges() []EventMessage
@@ -61,13 +61,14 @@ func (a *AggregateBase) OriginalVersion() int {
 // Importantly an aggregate with one event applied will be at version 0
 // this allows the aggregates to match the version in the domain where
 // the first event will be version 0.
-func (a *AggregateBase) CurrentVersion() int {
-	return a.version + len(a.changes)
+// i will be added to the result.
+func (a *AggregateBase) CurrentVersion(i int) int {
+	return a.version + len(a.changes) + i
 }
 
-// IncrementVersion increments the aggregate version number by one.
-func (a *AggregateBase) IncrementVersion() {
-	a.version++
+// IncrementVersion increments the aggregate version number by the value of i.
+func (a *AggregateBase) IncrementVersion(i int) {
+	a.version += i
 }
 
 // TrackChange stores the EventMessage in the changes collection.
