@@ -18,12 +18,12 @@ func (e *ErrCommandExecution) Error() string {
 // the expected version.
 type ErrConcurrencyViolation struct {
 	Aggregate       Aggregate
-	ExpectedVersion *int
+	ExpectedVersion int
 	StreamName      string
 }
 
 func (e *ErrConcurrencyViolation) Error() string {
-	return fmt.Sprintf("ConcurrencyError: StreamName: %s ExpectedVersion: %d StreamName: %s", e.Aggregate.AggregateID(), *e.ExpectedVersion, e.StreamName)
+	return fmt.Sprintf("ConcurrencyError: StreamName: %s ExpectedVersion: %d StreamName: %s", e.Aggregate.AggregateID(), e.ExpectedVersion, e.StreamName)
 }
 
 // ErrUnauthorized is returned when a request to the repository is not authorized

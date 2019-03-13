@@ -22,6 +22,6 @@ func NewUUID() string {
 // is required such as expectedVersion argument on the repository
 // and this helper function makes keeps the code cleaner in these
 // cases.
-func Int(i int) *int {
-	return &i
-}
+//func Int(i int) *int {
+//	return &i
+//}
