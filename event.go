@@ -57,8 +57,8 @@ func NewEventMessage(aggregateID AggregateId, event interface{}, version *EventV
 }
 
 // EventType returns the name of the event type as a string.
-func (c *EventDescriptor) EventType() string {
-	return typeOf(c.event)
+func (c *EventDescriptor) EventType() EventType {
+	return EventType{typeOf(c.event)}
 }
 
 // StreamName returns the ID of the Aggregate that the event relates to.
