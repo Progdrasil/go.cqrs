@@ -51,8 +51,8 @@ func (a *AggregateBase) AggregateID() string {
 // Importantly an aggregate with one event applied will be at version 0
 // this allows the aggregates to match the version in the domain where
 // the first event will be version 0.
-func (a *AggregateBase) OriginalVersion() *int {
-	return Int(a.version)
+func (a *AggregateBase) OriginalVersion() int {
+	return a.version
 }
 
 // CurrentVersion returns the version of the aggregate as it was when it was
