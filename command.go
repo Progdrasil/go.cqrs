@@ -5,11 +5,15 @@
 
 package cqrs
 
+type CommandType struct {
+	Name string
+}
+
 // CommandMessage is the interface that a command message must implement.
 type CommandMessage interface {
 
 	// StreamName returns the ID of the Aggregate that the command relates to
-	AggregateID() string
+	AggregateID() AggregateId
 
 	// Headers returns the key value collection of headers for the command.
 	Headers() map[string]interface{}
@@ -21,33 +25,33 @@ type CommandMessage interface {
 	Command() interface{}
 
 	// CommandType returns a string descriptor of the command name
-	CommandType() string
+	CommandType() CommandType
 }
 
 // CommandDescriptor is an implementation of the command message interface.
 type CommandDescriptor struct {
-	id      string
-	command interface{}
-	headers map[string]interface{}
+	aggregateId AggregateId
+	command     interface{}
+	headers     map[string]interface{}
 }
 
 // NewCommandMessage returns a new command descriptor
-func NewCommandMessage(aggregateID string, command interface{}) *CommandDescriptor {
+func NewCommandMessage(aggregateId AggregateId, command interface{}) *CommandDescriptor {
 	return &CommandDescriptor{
-		id:      aggregateID,
-		command: command,
-		headers: make(map[string]interface{}),
+		aggregateId: aggregateId,
+		command:     command,
+		headers:     make(map[string]interface{}),
 	}
 }
 
 // CommandType returns the command type name as a string
-func (c *CommandDescriptor) CommandType() string {
-	return typeOf(c.command)
+func (c *CommandDescriptor) CommandType() CommandType {
+	return CommandType{typeOf(c.command)}
 }
 
 // StreamName returns the ID of the aggregate that the command relates to.
-func (c *CommandDescriptor) AggregateID() string {
-	return c.id
+func (c *CommandDescriptor) AggregateID() AggregateId {
+	return c.aggregateId
 }
 
 // Headers returns the collection of headers for the command.

@@ -34,8 +34,8 @@ func NewDelegateAggregateFactory() *DelegateAggregateFactory {
 // RegisterDelegate is used to register a new funtion for instantiation of an
 // aggregate instance.
 //
-// 	func(id string) Aggregate {return NewMyAggregateType(id)}
-// 	func(id string) Aggregate { return &MyAggregateType{AggregateBase:NewAggregateBase(id)} }
+// 	func(aggregateId string) Aggregate {return NewMyAggregateType(aggregateId)}
+// 	func(aggregateId string) Aggregate { return &MyAggregateType{AggregateBase:NewAggregateBase(aggregateId)} }
 func (t *DelegateAggregateFactory) RegisterDelegate(aggregate Aggregate, delegate func(string) Aggregate) error {
 	typeName := typeOf(aggregate)
 	if _, ok := t.delegates[typeName]; ok {

@@ -44,7 +44,7 @@ func (s *CommandSuite) TestNewCommandMessage(c *C) {
 
 	cm := NewCommandMessage(id, cmd)
 
-	c.Assert(cm.id, Equals, id)
+	c.Assert(cm.aggregateId, Equals, id)
 	c.Assert(cm.command, Equals, cmd)
 	c.Assert(cm.headers, NotNil)
 }

@@ -39,7 +39,7 @@ type EventStore interface {
 
 // Event encapsulates the data of an domain event.
 //
-// EventStreamID is the id returned in the event atom response.
+// EventStreamID is the aggregateId returned in the event atom response.
 // EventNumber represents the stream version for this event.
 // EventType describes the event type.
 // EventID is the guid of the event.

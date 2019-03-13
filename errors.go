@@ -59,7 +59,7 @@ type ErrAggregateNotFound struct {
 }
 
 func (e *ErrAggregateNotFound) Error() string {
-	return fmt.Sprintf("Could not find any aggregate of type %s with id %s",
+	return fmt.Sprintf("Could not find any aggregate of type %s with aggregateId %s",
 		e.AggregateType,
 		e.AggregateID)
 }
