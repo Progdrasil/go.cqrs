@@ -8,32 +8,44 @@ package cqrs
 import "github.com/jetbasrawi/go.cqrs/internal/uuid"
 
 type AggregateType struct {
-	Name string
+	name string
+}
+
+func NewAggregateType(i interface{}) AggregateType {
+	t := typeOf(i)
+	return AggregateType{name: t}
+}
+
+func (t *AggregateType) AggregateTypeName() string {
+	return t.name
 }
 
 type AggregateId struct {
 	stringId string
 }
 
-func NewAggregateId(id string) *AggregateId {
+func NewAggregateId(id string) AggregateId {
 	if id == "" {
-		return &AggregateId{id}
+		return AggregateId{id}
 	} else {
-		return &AggregateId{uuid.NewV4().String()}
+		return AggregateId{uuid.NewV4().String()}
 	}
 }
 
-func (id *AggregateId) String() string {
+func (id *AggregateId) AggregateIdString() string {
 	return id.stringId
 }
 
 type AggregateVersion struct {
-	Number int
+	number int
 }
 
-func MakeAggregateType(i interface{}) AggregateType {
-	t := typeOf(i)
-	return AggregateType{Name: t}
+func NewAggregateVersion(i int) *AggregateVersion {
+	return &AggregateVersion{number: i}
+}
+
+func (v *AggregateVersion) AggregateVersionNumber() int {
+	return v.number
 }
 
 //Aggregate is the interface that all aggregates should implement
@@ -91,12 +103,12 @@ func (a *AggregateBase) OriginalVersion() AggregateVersion {
 // this allows the aggregates to match the version in the domain where
 // the first event will be version 0.
 func (a *AggregateBase) CurrentVersion() AggregateVersion {
-	return AggregateVersion{a.version.Number + len(a.changes)}
+	return AggregateVersion{a.version.AggregateVersionNumber() + len(a.changes)}
 }
 
 // IncrementVersion increments the aggregate version number by one.
 func (a *AggregateBase) IncrementVersion() {
-	a.version.Number++
+	a.version.number++
 }
 
 // TrackChange stores the EventMessage in the changes collection.

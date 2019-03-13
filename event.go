@@ -34,7 +34,7 @@ type EventMessage interface {
 	// EventType returns a string descriptor of the command name
 	EventType() EventType
 
-	// Number returns the version of the event
+	// number returns the version of the event
 	Version() *EventVersion
 }
 
@@ -81,7 +81,7 @@ func (c *EventDescriptor) Event() interface{} {
 	return c.event
 }
 
-// Number returns the version of the event
+// number returns the version of the event
 func (c *EventDescriptor) Version() *EventVersion {
 	return c.version
 }

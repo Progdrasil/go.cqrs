@@ -6,6 +6,6 @@
 package cqrs
 
 type Repository interface {
-	Load(aggregateType, id string) (Aggregate, error)
-	Save(aggregate Aggregate, expectedVersion *int) error
+	Load(aggregateType AggregateType, aggregateId AggregateId) (Aggregate, error)
+	Save(aggregate Aggregate, expectedVersion *AggregateVersion) error
 }
