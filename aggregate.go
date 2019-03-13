@@ -5,12 +5,26 @@
 
 package cqrs
 
+import "github.com/jetbasrawi/go.cqrs/internal/uuid"
+
 type AggregateType struct {
 	Name string
 }
 
 type AggregateId struct {
-	StringId string
+	stringId string
+}
+
+func NewAggregateId(id string) *AggregateId {
+	if id == "" {
+		return &AggregateId{id}
+	} else {
+		return &AggregateId{uuid.NewV4().String()}
+	}
+}
+
+func (id *AggregateId) String() string {
+	return id.stringId
 }
 
 type AggregateVersion struct {
