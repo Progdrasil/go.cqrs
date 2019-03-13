@@ -5,6 +5,10 @@
 
 package cqrs
 
+type EventVersion struct {
+	Number int
+}
+
 // EventMessage is the interface that an event must implement.
 type EventMessage interface {
 
@@ -27,19 +31,19 @@ type EventMessage interface {
 	EventType() string
 
 	// Number returns the version of the event
-	Version() *int
+	Version() EventVersion
 }
 
 // EventDescriptor is an implementation of the event message interface.
 type EventDescriptor struct {
-	id      string
+	id      AggregateId
 	event   interface{}
 	headers map[string]interface{}
-	version *int
+	version EventVersion
 }
 
 // NewEventMessage returns a new event descriptor
-func NewEventMessage(aggregateID string, event interface{}, version *int) *EventDescriptor {
+func NewEventMessage(aggregateID AggregateId, event interface{}, version EventVersion) *EventDescriptor {
 	return &EventDescriptor{
 		id:      aggregateID,
 		event:   event,
@@ -54,7 +58,7 @@ func (c *EventDescriptor) EventType() string {
 }
 
 // StreamName returns the ID of the Aggregate that the event relates to.
-func (c *EventDescriptor) AggregateID() string {
+func (c *EventDescriptor) AggregateID() AggregateId {
 	return c.id
 }
 
@@ -74,6 +78,6 @@ func (c *EventDescriptor) Event() interface{} {
 }
 
 // Number returns the version of the event
-func (c *EventDescriptor) Version() *int {
+func (c *EventDescriptor) Version() EventVersion {
 	return c.version
 }
