@@ -9,6 +9,14 @@ type AggregateType struct {
 	Name string
 }
 
+type AggregateId struct {
+	StringId string
+}
+
+type AggregateVersion struct {
+	Number int
+}
+
 func MakeAggregateType(i interface{}) AggregateType {
 	t := typeOf(i)
 	return AggregateType{Name: t}
@@ -33,22 +41,22 @@ type Aggregate interface {
 // Aggregate root interface your aggregate will need to implement the Apply
 // method that will contain behaviour specific to your aggregate.
 type AggregateBase struct {
-	id      string
-	version int
+	id      AggregateId
+	version AggregateVersion
 	changes []EventMessage
 }
 
 // NewAggregateBase contructs a new AggregateBase.
-func NewAggregateBase(id string) *AggregateBase {
+func NewAggregateBase(id AggregateId) *AggregateBase {
 	return &AggregateBase{
 		id:      id,
 		changes: []EventMessage{},
-		version: -1,
+		version: AggregateVersion{-1},
 	}
 }
 
 // StreamName returns the StreamName
-func (a *AggregateBase) AggregateID() string {
+func (a *AggregateBase) AggregateID() AggregateId {
 	return a.id
 }
 
@@ -58,7 +66,7 @@ func (a *AggregateBase) AggregateID() string {
 // Importantly an aggregate with one event applied will be at version 0
 // this allows the aggregates to match the version in the domain where
 // the first event will be version 0.
-func (a *AggregateBase) OriginalVersion() int {
+func (a *AggregateBase) OriginalVersion() AggregateVersion {
 	return a.version
 }
 
@@ -68,13 +76,13 @@ func (a *AggregateBase) OriginalVersion() int {
 // Importantly an aggregate with one event applied will be at version 0
 // this allows the aggregates to match the version in the domain where
 // the first event will be version 0.
-func (a *AggregateBase) CurrentVersion() int {
-	return a.version + len(a.changes)
+func (a *AggregateBase) CurrentVersion() AggregateVersion {
+	return AggregateVersion{a.version.Number + len(a.changes)}
 }
 
 // IncrementVersion increments the aggregate version number by one.
 func (a *AggregateBase) IncrementVersion() {
-	a.version++
+	a.version.Number++
 }
 
 // TrackChange stores the EventMessage in the changes collection.

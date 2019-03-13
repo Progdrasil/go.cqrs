@@ -171,7 +171,7 @@ func Equal(u1 UUID, u2 UUID) bool {
 	return bytes.Equal(u1[:], u2[:])
 }
 
-// Version returns algorithm version used to generate UUID.
+// Number returns algorithm version used to generate UUID.
 func (u UUID) Version() uint {
 	return uint(u[6] >> 4)
 }
