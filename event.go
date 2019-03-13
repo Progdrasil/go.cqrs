@@ -31,7 +31,7 @@ type EventMessage interface {
 	EventType() string
 
 	// Number returns the version of the event
-	Version() EventVersion
+	Version() *EventVersion
 }
 
 // EventDescriptor is an implementation of the event message interface.
