@@ -42,7 +42,7 @@ func NewInMemoryDispatcher() *InMemoryDispatcher {
 
 //Dispatch passes the CommandMessage on to all registered command handlers.
 func (b *InMemoryDispatcher) Dispatch(command CommandMessage) error {
-	if handler, ok := b.handlers[command.CommandType().Name]; ok {
+	if handler, ok := b.handlers[command.CommandType()]; ok {
 		return handler.Handle(command)
 	}
 	return fmt.Errorf("The command bus does not have a handler for commands of type: %s", command.CommandType())

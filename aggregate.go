@@ -5,44 +5,15 @@
 
 package cqrs
 
-import "github.com/jetbasrawi/go.cqrs/internal/uuid"
 
-
-type AggregateId struct {
-	stringId string
-}
-
-func NewAggregateId(id string) AggregateId {
-	if id == "" {
-		return AggregateId{id}
-	} else {
-		return AggregateId{uuid.NewV4().String()}
-	}
-}
-
-func (id *AggregateId) IdString() string {
-	return id.stringId
-}
-
-type AggregateVersion struct {
-	number int
-}
-
-func NewAggregateVersion(i int) *AggregateVersion {
-	return &AggregateVersion{number: i}
-}
-
-func (v *AggregateVersion) AggregateVersionNumber() int {
-	return v.number
-}
 
 //Aggregate is the interface that all aggregates should implement
 type Aggregate interface {
-	AggregateID() AggregateId
-	OriginalVersion() AggregateVersion
-	CurrentVersion() AggregateVersion
+	AggregateID() string
+	OriginalVersion() *int
+	CurrentVersion() *int
 	IncrementVersion()
-	Apply(events EventMessage, isNew bool)
+	Apply(EventMessage, bool)
 	TrackChange(EventMessage)
 	GetChanges() []EventMessage
 	ClearChanges()
@@ -55,22 +26,22 @@ type Aggregate interface {
 // Aggregate root interface your aggregate will need to implement the Apply
 // method that will contain behaviour specific to your aggregate.
 type AggregateBase struct {
-	id      AggregateId
-	version AggregateVersion
+	id      string
+	version int
 	changes []EventMessage
 }
 
 // NewAggregateBase contructs a new AggregateBase.
-func NewAggregateBase(id AggregateId) *AggregateBase {
+func NewAggregateBase(id string) *AggregateBase {
 	return &AggregateBase{
 		id:      id,
 		changes: []EventMessage{},
-		version: AggregateVersion{-1},
+		version: -1,
 	}
 }
 
 // StreamName returns the StreamName
-func (a *AggregateBase) AggregateID() AggregateId {
+func (a *AggregateBase) AggregateID() string {
 	return a.id
 }
 
@@ -80,8 +51,8 @@ func (a *AggregateBase) AggregateID() AggregateId {
 // Importantly an aggregate with one event applied will be at version 0
 // this allows the aggregates to match the version in the domain where
 // the first event will be version 0.
-func (a *AggregateBase) OriginalVersion() AggregateVersion {
-	return a.version
+func (a *AggregateBase) OriginalVersion() *int {
+	return Int(a.version)
 }
 
 // CurrentVersion returns the version of the aggregate as it was when it was
@@ -90,13 +61,13 @@ func (a *AggregateBase) OriginalVersion() AggregateVersion {
 // Importantly an aggregate with one event applied will be at version 0
 // this allows the aggregates to match the version in the domain where
 // the first event will be version 0.
-func (a *AggregateBase) CurrentVersion() AggregateVersion {
-	return AggregateVersion{a.version.AggregateVersionNumber() + len(a.changes)}
+func (a *AggregateBase) CurrentVersion() *int {
+	return Int(a.version + len(a.changes))
 }
 
 // IncrementVersion increments the aggregate version number by one.
 func (a *AggregateBase) IncrementVersion() {
-	a.version.number++
+	a.version++
 }
 
 // TrackChange stores the EventMessage in the changes collection.
