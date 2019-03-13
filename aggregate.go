@@ -24,9 +24,9 @@ func MakeAggregateType(i interface{}) AggregateType {
 
 //Aggregate is the interface that all aggregates should implement
 type Aggregate interface {
-	AggregateID() string
-	OriginalVersion() int
-	CurrentVersion() int
+	AggregateID() AggregateId
+	OriginalVersion() AggregateVersion
+	CurrentVersion() AggregateVersion
 	IncrementVersion()
 	Apply(events EventMessage, isNew bool)
 	TrackChange(EventMessage)
