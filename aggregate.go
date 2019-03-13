@@ -10,8 +10,8 @@ package cqrs
 //Aggregate is the interface that all aggregates should implement
 type Aggregate interface {
 	AggregateID() string
-	OriginalVersion() *int
-	CurrentVersion() *int
+	OriginalVersion() int
+	CurrentVersion() int
 	IncrementVersion()
 	Apply(EventMessage, bool)
 	TrackChange(EventMessage)
@@ -61,8 +61,8 @@ func (a *AggregateBase) OriginalVersion() *int {
 // Importantly an aggregate with one event applied will be at version 0
 // this allows the aggregates to match the version in the domain where
 // the first event will be version 0.
-func (a *AggregateBase) CurrentVersion() *int {
-	return Int(a.version + len(a.changes))
+func (a *AggregateBase) CurrentVersion() int {
+	return a.version + len(a.changes)
 }
 
 // IncrementVersion increments the aggregate version number by one.
