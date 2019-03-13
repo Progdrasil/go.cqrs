@@ -84,7 +84,7 @@ func (c *EventDescriptor) Version() int {
 	return c.version
 }
 
-func (c *EventDescriptor) Commit() bool {
+func (c *EventDescriptor) Committed() bool {
 	return c.committed
 }
 
