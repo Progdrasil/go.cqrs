@@ -57,6 +57,6 @@ func (s *DelegateEventFactorySuite) TestCanGetEventInstanceFromString(c *C) {
 	_ = s.factory.RegisterDelegate(&SomeEvent{},
 		func() interface{} { return &SomeEvent{} })
 
-	ev := s.factory.GetEvent(typeOf(&SomeEvent{}))
+	ev := s.factory.MakeEvent(typeOf(&SomeEvent{}))
 	c.Assert(ev, DeepEquals, &SomeEvent{})
 }

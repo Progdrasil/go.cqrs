@@ -19,15 +19,15 @@ func (s *AggregateBaseSuite) TestNewAggregateBase(c *C) {
 	c.Assert(agg, NotNil)
 	c.Assert(agg.AggregateID(), Equals, id)
 	c.Assert(agg.OriginalVersion(), Equals, -1)
-	c.Assert(agg.CurrentVersion(), Equals, -1)
+	c.Assert(agg.CurrentVersion(0), Equals, -1)
 }
 
 func (s *AggregateBaseSuite) TestIncrementVersion(c *C) {
 	agg := NewAggregateBase(NewUUID())
-	c.Assert(agg.CurrentVersion(), Equals, -1)
+	c.Assert(agg.CurrentVersion(0), Equals, -1)
 
-	agg.IncrementVersion()
-	c.Assert(agg.CurrentVersion(), Equals, 0)
+	agg.IncrementVersion(1)
+	c.Assert(agg.CurrentVersion(0), Equals, 0)
 }
 
 func (s *AggregateBaseSuite) TestTrackOneChange(c *C) {
@@ -72,7 +72,7 @@ func NewSomeAggregate(id string) Aggregate {
 	}
 }
 
-func (t *SomeAggregate) Apply(event EventMessage, isNew bool) {
+func (t *SomeAggregate) Apply(event EventMessage) {
 	t.events = append(t.events, event)
 }
 
@@ -92,7 +92,7 @@ func NewSomeOtherAggregate(id string) Aggregate {
 }
 
 //TODO: No tests for isNew
-func (t *SomeOtherAggregate) Apply(event EventMessage, isNew bool) {
+func (t *SomeOtherAggregate) Apply(event EventMessage) {
 	t.changes = append(t.changes, event)
 }
 
