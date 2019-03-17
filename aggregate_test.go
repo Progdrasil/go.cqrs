@@ -12,8 +12,7 @@ var _ = Suite(&AggregateBaseSuite{})
 type AggregateBaseSuite struct{}
 
 func (s *AggregateBaseSuite) TestNewAggregateBase(c *C) {
-	id := NewUUID()
-
+	id := NewAggregateId()
 	agg := NewAggregateBase(id)
 
 	c.Assert(agg, NotNil)
@@ -23,7 +22,7 @@ func (s *AggregateBaseSuite) TestNewAggregateBase(c *C) {
 }
 
 func (s *AggregateBaseSuite) TestIncrementVersion(c *C) {
-	agg := NewAggregateBase(NewUUID())
+	agg := NewAggregateBase(NewAggregateId())
 	c.Assert(agg.CurrentVersion(0), Equals, -1)
 
 	agg.IncrementVersion(1)
@@ -31,7 +30,7 @@ func (s *AggregateBaseSuite) TestIncrementVersion(c *C) {
 }
 
 func (s *AggregateBaseSuite) TestTrackOneChange(c *C) {
-	ev := NewTestEventMessage(NewUUID())
+	ev := NewTestEventMessage(NewAggregateId())
 	agg := NewSomeAggregate(ev.AggregateID())
 
 	agg.TrackChange(ev)
@@ -40,7 +39,7 @@ func (s *AggregateBaseSuite) TestTrackOneChange(c *C) {
 }
 
 func (s *AggregateBaseSuite) TestTrackMultipleChanges(c *C) {
-	agg := NewAggregateBase(NewUUID())
+	agg := NewAggregateBase(NewAggregateId())
 	ev1 := NewTestEventMessage(agg.AggregateID())
 	ev2 := NewTestEventMessage(agg.AggregateID())
 
@@ -51,7 +50,7 @@ func (s *AggregateBaseSuite) TestTrackMultipleChanges(c *C) {
 }
 
 func (s *AggregateBaseSuite) TestClearChanges(c *C) {
-	agg := NewAggregateBase(NewUUID())
+	agg := NewAggregateBase(NewAggregateId())
 	ev := NewTestEventMessage(agg.AggregateID())
 
 	agg.TrackChange(ev)
@@ -66,7 +65,7 @@ type SomeAggregate struct {
 	events []EventMessage
 }
 
-func NewSomeAggregate(id string) Aggregate {
+func NewSomeAggregate(id AggregateId) Aggregate {
 	return &SomeAggregate{
 		AggregateBase: NewAggregateBase(id),
 	}
@@ -85,7 +84,7 @@ type SomeOtherAggregate struct {
 	changes []EventMessage
 }
 
-func NewSomeOtherAggregate(id string) Aggregate {
+func NewSomeOtherAggregate(id AggregateId) Aggregate {
 	return &SomeOtherAggregate{
 		AggregateBase: NewAggregateBase(id),
 	}

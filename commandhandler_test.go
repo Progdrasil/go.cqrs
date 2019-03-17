@@ -24,10 +24,10 @@ func (t *TestCommandHandler) Handle(command CommandMessage) error {
 }
 
 type MockRepository struct {
-	aggregates map[string]Aggregate
+	aggregates map[AggregateId]Aggregate
 }
 
-func (m *MockRepository) Load(aggregateType string, id string) (Aggregate, error) {
+func (m *MockRepository) Load(aggregateType string, id AggregateId) (Aggregate, error) {
 	return m.aggregates[id], nil
 }
 

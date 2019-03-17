@@ -31,7 +31,7 @@ func (s *InternalCommandBusSuite) TestNewInternalCommandBus(c *C) {
 func (s *InternalCommandBusSuite) TestShouldHandleCommand(c *C) {
 	err := s.bus.RegisterHandler(s.stubhandler, &SomeCommand{})
 	c.Assert(err, IsNil)
-	cmd := NewSomeCommandMessage(NewUUID())
+	cmd := NewSomeCommandMessage(NewAggregateId())
 
 	err = s.bus.Dispatch(cmd)
 
@@ -40,7 +40,7 @@ func (s *InternalCommandBusSuite) TestShouldHandleCommand(c *C) {
 }
 
 func (s *InternalCommandBusSuite) TestShouldReturnErrorIfNoHandlerRegisteredForCommand(c *C) {
-	cmd := NewSomeCommandMessage(NewUUID())
+	cmd := NewSomeCommandMessage(NewAggregateId())
 
 	err := s.bus.Dispatch(cmd)
 

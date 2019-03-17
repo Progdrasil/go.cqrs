@@ -10,7 +10,7 @@ package cqrs
 type EventMessage interface {
 
 	// StreamName returns the ID of the Aggregate that the event relates to
-	AggregateID() string
+	AggregateID() AggregateId
 
 	// GetHeaders returns the key value collection of headers for the event.
 	//
@@ -36,7 +36,7 @@ type EventMessage interface {
 
 // EventDescriptor is an implementation of the event message interface.
 type EventDescriptor struct {
-	id        string
+	id        AggregateId
 	event     interface{}
 	headers   map[string]interface{}
 	version   int
@@ -44,7 +44,7 @@ type EventDescriptor struct {
 }
 
 // NewEventMessage returns a new event descriptor
-func NewEventMessage(aggregateID string, event interface{}, version int, committed bool) *EventDescriptor {
+func NewEventMessage(aggregateID AggregateId, event interface{}, version int, committed bool) *EventDescriptor {
 	return &EventDescriptor{
 		id:      aggregateID,
 		event:   event,
@@ -60,7 +60,7 @@ func (c *EventDescriptor) EventType() string {
 }
 
 // StreamName returns the ID of the Aggregate that the event relates to.
-func (c *EventDescriptor) AggregateID() string {
+func (c *EventDescriptor) AggregateID() AggregateId {
 	return c.id
 }
 

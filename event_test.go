@@ -25,13 +25,13 @@ type SomeOtherEvent struct {
 	OrderID string
 }
 
-func NewTestEventMessage(id string) *EventDescriptor {
+func NewTestEventMessage(id AggregateId) *EventDescriptor {
 	ev := &SomeEvent{Item: NewUUID(), Count: rand.Intn(100)}
 	return NewEventMessage(id, ev, 0, false)
 }
 
 func (s *EventSuite) TestNewEventMessage(c *C) {
-	id := NewUUID()
+	id := NewAggregateId()
 	ev := &SomeEvent{Item: "Some String", Count: 43}
 
 	em := NewEventMessage(id, ev, 0, false)
@@ -55,14 +55,14 @@ func (s *EventSuite) TestShouldGetTypeOfEvent(c *C) {
 
 func (s *EventSuite) TestShouldGetEventVersion(c *C) {
 	ev := &SomeEvent{"Some data", 456}
-	em := NewEventMessage(NewUUID(), ev, 5, false)
+	em := NewEventMessage(NewAggregateId(), ev, 5, false)
 
 	c.Assert(em.Version(), Equals, 5)
 }
 
 func (s *EventSuite) TestShouldGetHeaders(c *C) {
 	ev := &SomeEvent{"Some data", 456}
-	em := NewEventMessage(NewUUID(), ev, 5, false)
+	em := NewEventMessage(NewAggregateId(), ev, 5, false)
 	em.headers["a"] = "b"
 
 	h := em.GetHeaders()
@@ -72,14 +72,14 @@ func (s *EventSuite) TestShouldGetHeaders(c *C) {
 
 func (s *EventSuite) TestShouldGetEvent(c *C) {
 	ev := &SomeEvent{"Some data", 456}
-	em := NewEventMessage(NewUUID(), ev, 0, false)
+	em := NewEventMessage(NewAggregateId(), ev, 0, false)
 	got := em.Event()
 	c.Assert(got, DeepEquals, em.event)
 }
 
 func (s *EventSuite) TestAddHeaderInt(c *C) {
 	ev := &SomeEvent{"Some data", 456}
-	em := NewEventMessage(NewUUID(), ev, 0, false)
+	em := NewEventMessage(NewAggregateId(), ev, 0, false)
 
 	em.SetHeader("a", 3)
 
@@ -88,7 +88,7 @@ func (s *EventSuite) TestAddHeaderInt(c *C) {
 
 func (s *EventSuite) TestAddHeaderString(c *C) {
 	ev := &SomeEvent{"Some data", 456}
-	em := NewEventMessage(NewUUID(), ev, 0, false)
+	em := NewEventMessage(NewAggregateId(), ev, 0, false)
 
 	em.SetHeader("a", "abc")
 
@@ -97,7 +97,7 @@ func (s *EventSuite) TestAddHeaderString(c *C) {
 
 func (s *EventSuite) TestAddHeaderStruct(c *C) {
 	ev := &SomeEvent{"Some data", 456}
-	em := NewEventMessage(NewUUID(), ev, 0, false)
+	em := NewEventMessage(NewAggregateId(), ev, 0, false)
 
 	em.SetHeader("a", ev)
 

@@ -50,7 +50,7 @@ type Event struct {
 	EventStreamID string      `json:"eventStreamId,omitempty"`
 	EventNumber   int         `json:"eventNumber,omitempty"`
 	EventType     string      `json:"eventType,omitempty"`
-	EventID       string      `json:"eventId,omitempty"`
+	EventID       AggregateId      `json:"eventId,omitempty"`
 	Data          interface{} `json:"data"`
 	Links         []Link      `json:"links,omitempty"`
 	MetaData      interface{} `json:"metadata,omitempty"`
@@ -86,12 +86,12 @@ func Time(t time.Time) TimeStr {
 // If an empty eventType is provided the eventType will be set to the
 // name of the type provided.
 // data and meta can be nil.
-func NewEvent(eventID, eventType string, data interface{}, meta interface{}) *Event {
+func NewEvent(eventID AggregateId, eventType string, data interface{}, meta interface{}) *Event {
 	e := &Event{}
 
 	e.EventID = eventID
-	if eventID == "" {
-		e.EventID = NewUUID()
+	if eventID.Nil() {
+		e.EventID = NewAggregateId()
 	}
 
 	e.EventType = eventType

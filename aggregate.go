@@ -5,11 +5,28 @@
 
 package cqrs
 
+type AggregateId string
+
+func NewAggregateId() AggregateId {
+	return AggregateId(NewUUID())
+}
+
+func (a AggregateId) String() string {
+	return string(a)
+}
+
+func (a AggregateId) NotNil() bool {
+	return a != ""
+}
+
+func (a AggregateId) Nil() bool {
+	return a == ""
+}
 
 
 //Aggregate is the interface that all aggregates should implement
 type Aggregate interface {
-	AggregateID() string
+	AggregateID() AggregateId
 	OriginalVersion() int
 	CurrentVersion(int) int
 	IncrementVersion(int)
@@ -26,13 +43,13 @@ type Aggregate interface {
 // Aggregate root interface your aggregate will need to implement the Apply
 // method that will contain behaviour specific to your aggregate.
 type AggregateBase struct {
-	id      string
+	id      AggregateId
 	version int
 	changes []EventMessage
 }
 
 // NewAggregateBase contructs a new AggregateBase.
-func NewAggregateBase(id string) *AggregateBase {
+func NewAggregateBase(id AggregateId) *AggregateBase {
 	return &AggregateBase{
 		id:      id,
 		changes: []EventMessage{},
@@ -41,7 +58,7 @@ func NewAggregateBase(id string) *AggregateBase {
 }
 
 // StreamName returns the StreamName
-func (a *AggregateBase) AggregateID() string {
+func (a *AggregateBase) AggregateID() AggregateId {
 	return a.id
 }
 

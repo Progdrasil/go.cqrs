@@ -20,16 +20,16 @@ type SomeCommand struct {
 	Count int
 }
 
-func NewSomeCommandMessage(id string) *CommandDescriptor {
+func NewSomeCommandMessage(id AggregateId) *CommandDescriptor {
 	ev := &SomeCommand{Item: NewUUID(), Count: rand.Intn(100)}
 	return NewCommandMessage(id, ev)
 }
 
 type SomeOtherCommand struct {
-	OrderID string
+	OrderID AggregateId
 }
 
-func NewSomeOtherCommandMessage(id string) *CommandDescriptor {
+func NewSomeOtherCommandMessage(id AggregateId) *CommandDescriptor {
 	ev := &SomeOtherCommand{id}
 	return NewCommandMessage(id, ev)
 }
@@ -39,7 +39,7 @@ type ErrorCommand struct {
 }
 
 func (s *CommandSuite) TestNewCommandMessage(c *C) {
-	id := NewUUID()
+	id := NewAggregateId()
 	cmd := &SomeCommand{Item: "Some String", Count: 43}
 
 	cm := NewCommandMessage(id, cmd)
@@ -60,7 +60,7 @@ func (s *CommandSuite) TestShouldGetTypeOfCommand(c *C) {
 
 func (s *CommandSuite) TestShouldGetHeaders(c *C) {
 	cmd := &SomeCommand{"Some data", 456}
-	cm := NewCommandMessage(NewUUID(), cmd)
+	cm := NewCommandMessage(NewAggregateId(), cmd)
 	cm.headers["a"] = "b"
 
 	h := cm.Headers()
@@ -70,7 +70,7 @@ func (s *CommandSuite) TestShouldGetHeaders(c *C) {
 
 func (s *CommandSuite) TestShouldGetCommand(c *C) {
 	cmd := &SomeCommand{"Some data", 456}
-	cm := NewCommandMessage(NewUUID(), cmd)
+	cm := NewCommandMessage(NewAggregateId(), cmd)
 
 	got := cm.Command()
 
@@ -79,7 +79,7 @@ func (s *CommandSuite) TestShouldGetCommand(c *C) {
 
 func (s *CommandSuite) TestAddHeaderInt(c *C) {
 	cmd := &SomeCommand{"Some data", 456}
-	cm := NewCommandMessage(NewUUID(), cmd)
+	cm := NewCommandMessage(NewAggregateId(), cmd)
 
 	cm.SetHeader("a", 3)
 
@@ -88,7 +88,7 @@ func (s *CommandSuite) TestAddHeaderInt(c *C) {
 
 func (s *CommandSuite) TestAddHeaderString(c *C) {
 	cmd := &SomeCommand{"Some data", 456}
-	cm := NewCommandMessage(NewUUID(), cmd)
+	cm := NewCommandMessage(NewAggregateId(), cmd)
 
 	cm.SetHeader("a", "abc")
 
@@ -97,7 +97,7 @@ func (s *CommandSuite) TestAddHeaderString(c *C) {
 
 func (s *CommandSuite) TestAddHeaderStruct(c *C) {
 	cmd := &SomeCommand{"Some data", 456}
-	cm := NewCommandMessage(NewUUID(), cmd)
+	cm := NewCommandMessage(NewAggregateId(), cmd)
 
 	cm.SetHeader("a", cmd)
 
