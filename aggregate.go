@@ -11,7 +11,7 @@ func NewAggregateId() AggregateId {
 	return AggregateId(NewUUID())
 }
 
-func ToAggregateId(id string) AggregateId {
+func NewAggregateIdFromString(id string) AggregateId {
 	return AggregateId(id)
 }
 
@@ -30,7 +30,6 @@ func (a AggregateId) Nil() bool {
 func (a AggregateId) Equals(id AggregateId) bool {
 	return a.String() == id.String()
 }
-
 
 //Aggregate is the interface that all aggregates should implement
 type Aggregate interface {
