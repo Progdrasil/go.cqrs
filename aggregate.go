@@ -11,6 +11,10 @@ func NewAggregateId() AggregateId {
 	return AggregateId(NewUUID())
 }
 
+func ToAggregateId(id string) AggregateId {
+	return AggregateId(id)
+}
+
 func (a AggregateId) String() string {
 	return string(a)
 }
