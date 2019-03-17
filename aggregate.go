@@ -27,6 +27,10 @@ func (a AggregateId) Nil() bool {
 	return a == ""
 }
 
+func (a AggregateId) Equals(id AggregateId) bool {
+	return a.String() == id.String()
+}
+
 
 //Aggregate is the interface that all aggregates should implement
 type Aggregate interface {
