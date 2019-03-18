@@ -9,7 +9,7 @@ import (
 	"fmt"
 )
 
-//Dispatcher is the interface that should be implemented by command dispatcher
+//CommandDispatcher is the interface that should be implemented by command dispatcher
 //
 //The dispatcher is the mechanism through which commands are distributed to
 //the appropriate command handler.
@@ -20,11 +20,11 @@ import (
 //handler and call that handler's Handle method passing the command message as an
 //argument.
 //
-//Commands contained in a CommandMessage envelope are passed to the Dispatcher via
+//Commands contained in a CommandMessage envelope are passed to the CommandDispatcher via
 //the dispatch method.
-type Dispatcher interface {
+type CommandDispatcher interface {
 	Dispatch(CommandMessage) error
-	AddHandler(CommandHandler, ...interface{}) error
+	AddCommandHandler(CommandHandler, ...interface{}) error
 }
 
 //InMemoryDispatcher provides a lightweight and performant in process dispatcher
@@ -48,7 +48,7 @@ func (b *InMemoryDispatcher) Dispatch(command CommandMessage) error {
 	return fmt.Errorf("The command bus does not have a handler for commands of type: %s", command.CommandType())
 }
 
-//AddHandler registers a command handler for the command types specified by the
+//AddCommandHandler registers a command handler for the command types specified by the
 //variadic commands parameter.
 func (b *InMemoryDispatcher) AddHandler(handler CommandHandler, commands ...interface{}) error {
 	for _, command := range commands {

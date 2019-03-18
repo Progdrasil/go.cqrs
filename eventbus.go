@@ -33,7 +33,7 @@ func (b *InternalEventBus) PublishEvent(event EventMessage) {
 	}
 }
 
-// AddHandler registers an event handler for all of the events specified in the
+// AddCommandHandler registers an event handler for all of the events specified in the
 // variadic events parameter.
 func (b *InternalEventBus) AddHandler(handler EventHandler, events ...interface{}) {
 
