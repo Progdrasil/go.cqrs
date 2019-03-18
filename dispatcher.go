@@ -24,7 +24,7 @@ import (
 //the dispatch method.
 type Dispatcher interface {
 	Dispatch(CommandMessage) error
-	RegisterHandler(CommandHandler, ...interface{}) error
+	AddHandler(CommandHandler, ...interface{}) error
 }
 
 //InMemoryDispatcher provides a lightweight and performant in process dispatcher
@@ -48,9 +48,9 @@ func (b *InMemoryDispatcher) Dispatch(command CommandMessage) error {
 	return fmt.Errorf("The command bus does not have a handler for commands of type: %s", command.CommandType())
 }
 
-//RegisterHandler registers a command handler for the command types specified by the
+//AddHandler registers a command handler for the command types specified by the
 //variadic commands parameter.
-func (b *InMemoryDispatcher) RegisterHandler(handler CommandHandler, commands ...interface{}) error {
+func (b *InMemoryDispatcher) AddHandler(handler CommandHandler, commands ...interface{}) error {
 	for _, command := range commands {
 		typeName := typeOf(command)
 		if _, ok := b.handlers[typeName]; ok {

@@ -29,7 +29,7 @@ func (s *InternalCommandBusSuite) TestNewInternalCommandBus(c *C) {
 }
 
 func (s *InternalCommandBusSuite) TestShouldHandleCommand(c *C) {
-	err := s.bus.RegisterHandler(s.stubhandler, &SomeCommand{})
+	err := s.bus.AddHandler(s.stubhandler, &SomeCommand{})
 	c.Assert(err, IsNil)
 	cmd := NewSomeCommandMessage(NewAggregateId())
 
@@ -49,14 +49,14 @@ func (s *InternalCommandBusSuite) TestShouldReturnErrorIfNoHandlerRegisteredForC
 }
 
 func (s *InternalCommandBusSuite) TestDuplicateHandlerRegistrationReturnsAnError(c *C) {
-	err := s.bus.RegisterHandler(s.stubhandler, &SomeCommand{}, &SomeCommand{})
+	err := s.bus.AddHandler(s.stubhandler, &SomeCommand{}, &SomeCommand{})
 	c.Assert(err, DeepEquals, fmt.Errorf("Duplicate command handler registration with command bus for command of type: %s",
 		typeOf(&SomeCommand{"", 0})))
 }
 
 func (s *InternalCommandBusSuite) TestCanRegisterMultipleCommandsForTheSameHandler(c *C) {
 
-	err := s.bus.RegisterHandler(s.stubhandler, &SomeCommand{}, &SomeOtherCommand{})
+	err := s.bus.AddHandler(s.stubhandler, &SomeCommand{}, &SomeOtherCommand{})
 	c.Assert(err, IsNil)
 
 }

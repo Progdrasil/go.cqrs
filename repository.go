@@ -1,6 +1,6 @@
 package cqrs
 
-type Repository interface {
-	Load(aggregate Aggregate) error
-	Save(aggregate Aggregate) error
-}
+//type Repository interface {
+//	Load(aggregate Aggregate) error
+//	Save(aggregate Aggregate) error
+//}
