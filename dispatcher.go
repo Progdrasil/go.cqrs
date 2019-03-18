@@ -50,7 +50,7 @@ func (b *InMemoryDispatcher) Dispatch(command CommandMessage) error {
 
 //AddCommandHandler registers a command handler for the command types specified by the
 //variadic commands parameter.
-func (b *InMemoryDispatcher) AddHandler(handler CommandHandler, commands ...interface{}) error {
+func (b *InMemoryDispatcher) AddCommandHandler(handler CommandHandler, commands ...interface{}) error {
 	for _, command := range commands {
 		typeName := typeOf(command)
 		if _, ok := b.handlers[typeName]; ok {

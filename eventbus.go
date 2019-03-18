@@ -8,7 +8,7 @@ package cqrs
 // EventBus is the inteface that an event bus must implement.
 type EventBus interface {
 	PublishEvent(EventMessage)
-	AddHandler(EventHandler, ...interface{})
+	AddEventHandler(EventHandler, ...interface{})
 }
 
 // InternalEventBus provides a lightweight in process event bus
@@ -35,7 +35,7 @@ func (b *InternalEventBus) PublishEvent(event EventMessage) {
 
 // AddCommandHandler registers an event handler for all of the events specified in the
 // variadic events parameter.
-func (b *InternalEventBus) AddHandler(handler EventHandler, events ...interface{}) {
+func (b *InternalEventBus) AddEventHandler(handler EventHandler, events ...interface{}) {
 
 	for _, event := range events {
 		et := typeOf(event)
