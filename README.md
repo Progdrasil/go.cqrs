@@ -38,7 +38,7 @@ implement the pattern in Golang and also as a foundation upon which to build you
 | **EventBus** | EventBus interface and in memory implementation |
 | **EventHandler** | EventHandler interface |
 | **Repository** | Repository interface and an implementation of the CommonDomain repository that persists events in [GetEventStore](https://geteventstore.com/). While there are many generic event store implementations over common databases such as MongoDB,   [GetEventStore](https://geteventstore.com/) is a specialised EventSourcing database that is open source, performant and reflects the best thinking on the topic from a highly experienced team in this field. |
-| **StreamNamer** | A StreamNamer interface and a DelegateStreamNamer implementation that supports the use of functions with the signiature **func(string, string) string** to provide flexibility around stream naming. A common way to construct a stream name might be to use the name of your **BoundedContext** suffixed with an AggregateID. | 
+| **StreamNamer** | A StreamNamer interface and a DelegateStreamNamer implementation that supports the use of functions with the signiature **func(string, string) string** to provide flexibility around stream naming. A common way to construct a stream name might be to use the name of your **BoundedContext** suffixed with an AggregateId. | 
 
 All implementations are easily replaced to suit your particular requirements.
 

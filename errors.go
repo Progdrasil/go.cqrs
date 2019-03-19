@@ -54,14 +54,14 @@ func (e *ErrRepositoryUnavailable) Error() string {
 
 // ErrAggregateNotFound error returned when an aggregate was not found in the repository.
 type ErrAggregateNotFound struct {
-	AggregateID   string
+	AggregateId   string
 	AggregateType string
 }
 
 func (e *ErrAggregateNotFound) Error() string {
 	return fmt.Sprintf("Could not find any aggregate of type %s with AggregateId %s",
 		e.AggregateType,
-		e.AggregateID)
+		e.AggregateId)
 }
 
 // ErrNoMoreEvents is returned when there are no events to return

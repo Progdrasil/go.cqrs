@@ -9,7 +9,7 @@ package cqrs
 type CommandMessage interface {
 
 	// StreamName returns the ID of the Aggregate that the command relates to
-	AggregateID() *AggregateId
+	AggregateId() *AggregateId
 
 	// Headers returns the key value collection of headers for the command.
 	Headers() map[string]interface{}
@@ -46,7 +46,7 @@ func (c *CommandDescriptor) CommandType() string {
 }
 
 // StreamName returns the ID of the aggregate that the command relates to.
-func (c *CommandDescriptor) AggregateID() *AggregateId {
+func (c *CommandDescriptor) AggregateId() *AggregateId {
 	return c.aggregateId
 }
 
