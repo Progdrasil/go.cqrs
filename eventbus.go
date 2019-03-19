@@ -7,7 +7,7 @@ package cqrs
 
 // EventBus is the inteface that an event bus must implement.
 type EventBus interface {
-	PublishEvent(EventMessage)
+	PublishEvent(EventMessage) error
 	AddEventHandler(EventHandler, ...interface{})
 }
 
