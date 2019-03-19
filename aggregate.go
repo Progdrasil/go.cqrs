@@ -5,6 +5,8 @@
 
 package cqrs
 
+const NIL = "IT_YOONO_NIL"
+
 type AggregateId string
 
 func NewAggregateId() AggregateId {
@@ -15,16 +17,20 @@ func NewAggregateIdFromString(id string) AggregateId {
 	return AggregateId(id)
 }
 
+func NewAggregateIdNil() AggregateId {
+	return AggregateId(NIL)
+}
+
 func (a AggregateId) String() string {
 	return string(a)
 }
 
 func (a AggregateId) NotNil() bool {
-	return a != ""
+	return a != NIL
 }
 
 func (a AggregateId) Nil() bool {
-	return a == ""
+	return a == NIL
 }
 
 func (a AggregateId) Equals(id AggregateId) bool {
@@ -67,8 +73,7 @@ func NewAggregateBase(id AggregateId) *AggregateBase {
 // StreamName returns the StreamName
 func (a *AggregateBase) AggregateID() AggregateId {
 	if a.id == nil {
-		id := NewAggregateIdFromString("")
-		a.id = &id
+		return NewAggregateIdNil()
 	}
 
 	return *a.id
