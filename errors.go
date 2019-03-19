@@ -114,6 +114,6 @@ type ErrNoConfiguredEventHandler struct {
 	handler   string
 }
 
-func (e *ErrNoConfiguredEventHandler) Error() string {
+func (e ErrNoConfiguredEventHandler) Error() string {
 	return fmt.Sprintf("No configuration for: %s in handler: %s", e.eventType, e.handler)
 }
