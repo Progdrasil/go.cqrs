@@ -44,7 +44,7 @@ func (s *InternalCommandBusSuite) TestShouldReturnErrorIfNoHandlerRegisteredForC
 
 	err := s.bus.Dispatch(cmd)
 
-	c.Assert(err, DeepEquals, fmt.Errorf("The command bus does not have a handler for commands of type: %s", cmd.CommandType()))
+	c.Assert(err, DeepEquals, &ErrNoConfiguredHandler{cmd.CommandType(), typeOf(s.bus)})
 	c.Assert(s.stubhandler.command, IsNil)
 }
 

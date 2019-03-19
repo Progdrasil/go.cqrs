@@ -45,7 +45,7 @@ func (b *InMemoryDispatcher) Dispatch(command CommandMessage) error {
 	if handler, ok := b.handlers[command.CommandType()]; ok {
 		return handler.Handle(command)
 	}
-	return fmt.Errorf("The command bus does not have a handler for commands of type: %s", command.CommandType())
+	return &ErrNoConfiguredHandler{command.CommandType(), typeOf(b)}
 }
 
 //AddCommandHandler registers a command handler for the command types specified by the

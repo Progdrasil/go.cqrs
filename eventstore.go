@@ -48,7 +48,7 @@ type EventStore interface {
 type Event struct {
 	EventStreamID string      `json:"eventStreamId,omitempty"`
 	EventNumber   int         `json:"eventNumber,omitempty"`
-	EventType     string      `json:"eventType,omitempty"`
+	EventType     string      `json:"targetType,omitempty"`
 	EventID       AggregateId `json:"eventId,omitempty"`
 	Data          interface{} `json:"data"`
 	Links         []Link      `json:"links,omitempty"`
@@ -82,7 +82,7 @@ func Time(t time.Time) TimeStr {
 //
 // If an empty eventId is provided a new uuid will be generated automatically
 // and retured in the event.
-// If an empty eventType is provided the eventType will be set to the
+// If an empty targetType is provided the targetType will be set to the
 // name of the type provided.
 // data and meta can be nil.
 func NewEvent(eventID AggregateId, eventType string, data interface{}, meta interface{}) *Event {

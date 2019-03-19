@@ -31,7 +31,7 @@ func (t *InternalEventBus) PublishEvent(event EventMessage) error {
 			handler.Handle(event)
 		}
 	} else {
-		return &ErrNoConfiguredEventHandler{eventType: event.EventType(), handler: typeOf(t)}
+		return &ErrNoConfiguredHandler{targetType: event.EventType(), handler: typeOf(t)}
 	}
 	return nil
 }
