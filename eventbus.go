@@ -33,6 +33,7 @@ func (t *InternalEventBus) PublishEvent(event EventMessage) error {
 	} else {
 		return &ErrNoConfiguredEventHandler{eventType: event.EventType(), handler: typeOf(t)}
 	}
+	return nil
 }
 
 // AddCommandHandler registers an event handler for all of the events specified in the
