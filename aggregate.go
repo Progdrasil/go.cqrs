@@ -41,7 +41,7 @@ func (a *AggregateId) Equals(id AggregateId) bool {
 
 //Aggregate is the interface that all aggregates should implement
 type Aggregate interface {
-	AggregateID() *AggregateId
+	AggregateId() *AggregateId
 	OriginalVersion() int
 	CurrentVersion(int) int
 	IncrementVersion(int)
@@ -74,7 +74,7 @@ func NewAggregateBase(id *AggregateId) *AggregateBase {
 }
 
 // StreamName returns the StreamName
-func (a *AggregateBase) AggregateID() *AggregateId {
+func (a *AggregateBase) AggregateId() *AggregateId {
 	if a.id == nil {
 		return NewAggregateIdNil()
 	}

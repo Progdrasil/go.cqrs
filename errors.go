@@ -23,7 +23,7 @@ type ErrConcurrencyViolation struct {
 }
 
 func (e *ErrConcurrencyViolation) Error() string {
-	return fmt.Sprintf("ConcurrencyError: StreamName: %s ExpectedVersion: %d StreamName: %s", e.Aggregate.AggregateID(), e.ExpectedVersion, e.StreamName)
+	return fmt.Sprintf("ConcurrencyError: StreamName: %s ExpectedVersion: %d StreamName: %s", e.Aggregate.AggregateId(), e.ExpectedVersion, e.StreamName)
 }
 
 // ErrUnauthorized is returned when a request to the repository is not authorized

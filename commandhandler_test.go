@@ -32,6 +32,6 @@ func (m *MockRepository) Load(aggregateType string, id AggregateId) (Aggregate, 
 }
 
 func (m *MockRepository) Save(aggregate Aggregate) error {
-	m.aggregates[*aggregate.AggregateID()] = aggregate
+	m.aggregates[*aggregate.AggregateId()] = aggregate
 	return nil
 }

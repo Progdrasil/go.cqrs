@@ -16,7 +16,7 @@ func (s *AggregateBaseSuite) TestNewAggregateBase(c *C) {
 	agg := NewAggregateBase(id)
 
 	c.Assert(agg, NotNil)
-	c.Assert(agg.AggregateID(), Equals, id)
+	c.Assert(agg.AggregateId(), Equals, id)
 	c.Assert(agg.OriginalVersion(), Equals, -1)
 	c.Assert(agg.CurrentVersion(0), Equals, -1)
 }
@@ -40,8 +40,8 @@ func (s *AggregateBaseSuite) TestTrackOneChange(c *C) {
 
 func (s *AggregateBaseSuite) TestTrackMultipleChanges(c *C) {
 	agg := NewAggregateBase(NewAggregateId())
-	ev1 := NewTestEventMessage(agg.AggregateID())
-	ev2 := NewTestEventMessage(agg.AggregateID())
+	ev1 := NewTestEventMessage(agg.AggregateId())
+	ev2 := NewTestEventMessage(agg.AggregateId())
 
 	agg.TrackChange(ev1)
 	agg.TrackChange(ev2)
@@ -51,7 +51,7 @@ func (s *AggregateBaseSuite) TestTrackMultipleChanges(c *C) {
 
 func (s *AggregateBaseSuite) TestClearChanges(c *C) {
 	agg := NewAggregateBase(NewAggregateId())
-	ev := NewTestEventMessage(agg.AggregateID())
+	ev := NewTestEventMessage(agg.AggregateId())
 
 	agg.TrackChange(ev)
 
