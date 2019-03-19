@@ -29,8 +29,13 @@ type EventMessage interface {
 	// number returns the version of the event
 	Version() int
 
-	// If the event has been persisted to the eventstore will be true otherwise false
+	// If the event has been persisted to the event store will be true otherwise false
 	Committed() bool
+
+	// Sets the event committed status to true.
+	// committed means it has been recorded in the event store
+	// Events can not be uncommitted
+	Commit()
 }
 
 // EventDescriptor is an implementation of the event message interface.
@@ -43,13 +48,13 @@ type EventDescriptor struct {
 }
 
 // NewEventMessage returns a new event descriptor
-func NewEventMessage(aggregateID *AggregateId, event interface{}, version int, committed bool) *EventDescriptor {
+func NewEventMessage(aggregateID *AggregateId, event interface{}, version int) *EventDescriptor {
 	return &EventDescriptor{
 		id:        aggregateID,
 		event:     event,
 		headers:   make(map[string]interface{}),
 		version:   version,
-		committed: committed,
+		committed: false,
 	}
 }
 
@@ -85,4 +90,8 @@ func (t *EventDescriptor) Version() int {
 
 func (t *EventDescriptor) Committed() bool {
 	return t.committed
+}
+
+func (t *EventDescriptor) Commit() {
+	t.committed = true
 }
