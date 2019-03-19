@@ -27,15 +27,11 @@ func (a *AggregateId) String() string {
 	return a.id
 }
 
-func (a *AggregateId) NotNil() bool {
-	return a.id != NIL
-}
-
 func (a *AggregateId) Nil() bool {
 	return a.id == NIL
 }
 
-func (a *AggregateId) Equals(id AggregateId) bool {
+func (a *AggregateId) Equals(id *AggregateId) bool {
 	return a.String() == id.String()
 }
 
