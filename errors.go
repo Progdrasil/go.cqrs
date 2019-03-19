@@ -108,3 +108,12 @@ type ErrBadRequest struct {
 func (e ErrBadRequest) Error() string {
 	return "Bad request."
 }
+
+type ErrNoConfiguredEventHandler struct {
+	eventType string
+	handler   string
+}
+
+func (e *ErrNoConfiguredEventHandler) Error() string {
+	return fmt.Sprintf("No configuration for: %s in handler: %s", e.eventType, e.handler)
+}

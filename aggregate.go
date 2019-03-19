@@ -110,18 +110,18 @@ func (a *AggregateBase) IncrementVersion(i int) {
 
 // TrackChange stores the EventMessage in the changes collection.
 //
-// Changes are new, unpersisted events that have been applied to the aggregate.
+// Changes are new, uncommitted events that have been applied to the aggregate.
 func (a *AggregateBase) TrackChange(event EventMessage) {
 	a.changes = append(a.changes, event)
 }
 
-// GetChanges returns the collection of new unpersisted events that have
+// GetChanges returns the collection of new un committed events that have
 // been applied to the aggregate.
 func (a *AggregateBase) GetChanges() []EventMessage {
 	return a.changes
 }
 
-//ClearChanges removes all unpersisted events from the aggregate.
+//ClearChanges removes all uncommitted events from the aggregate.
 func (a *AggregateBase) ClearChanges() {
 	a.changes = []EventMessage{}
 }

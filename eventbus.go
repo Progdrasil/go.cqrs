@@ -25,29 +25,30 @@ func NewInternalEventBus() *InternalEventBus {
 }
 
 // PublishEvent publishes events to all registered event handlers
-func (b *InternalEventBus) PublishEvent(event EventMessage) {
-	if handlers, ok := b.eventHandlers[event.EventType()]; ok {
+func (t *InternalEventBus) PublishEvent(event EventMessage) error {
+	if handlers, ok := t.eventHandlers[event.EventType()]; ok {
 		for handler := range handlers {
 			handler.Handle(event)
 		}
+	} else {
+		return &ErrNoConfiguredEventHandler{eventType: event.EventType(), handler: typeOf(t)}
 	}
 }
 
 // AddCommandHandler registers an event handler for all of the events specified in the
 // variadic events parameter.
-func (b *InternalEventBus) AddEventHandler(handler EventHandler, events ...interface{}) {
-
+func (t *InternalEventBus) AddEventHandler(handler EventHandler, events ...interface{}) {
 	for _, event := range events {
 		et := typeOf(event)
 
 		// There can be multiple handlers for any event.
 		// Here we check that a map is initialized to hold these handlers
 		// for a given type. If not we create one.
-		if _, ok := b.eventHandlers[et]; !ok {
-			b.eventHandlers[et] = make(map[EventHandler]struct{})
+		if _, ok := t.eventHandlers[et]; !ok {
+			t.eventHandlers[et] = make(map[EventHandler]struct{})
 		}
 
 		// Add this handler to the collection of handlers for the type.
-		b.eventHandlers[et][handler] = struct{}{}
+		t.eventHandlers[et][handler] = struct{}{}
 	}
 }
