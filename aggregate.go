@@ -50,7 +50,7 @@ type Aggregate interface {
 // Aggregate root interface your aggregate will need to implement the Apply
 // method that will contain behaviour specific to your aggregate.
 type AggregateBase struct {
-	id      AggregateId
+	id      *AggregateId
 	version int
 	changes []EventMessage
 }
@@ -58,7 +58,7 @@ type AggregateBase struct {
 // NewAggregateBase contructs a new AggregateBase.
 func NewAggregateBase(id AggregateId) *AggregateBase {
 	return &AggregateBase{
-		id:      id,
+		id:      &id,
 		changes: []EventMessage{},
 		version: -1,
 	}
@@ -66,7 +66,12 @@ func NewAggregateBase(id AggregateId) *AggregateBase {
 
 // StreamName returns the StreamName
 func (a *AggregateBase) AggregateID() AggregateId {
-	return a.id
+	if a.id == nil {
+		id := NewAggregateIdFromString("")
+		a.id = &id
+	}
+
+	return *a.id
 }
 
 // OriginalVersion returns the version of the aggregate as it was when it was
