@@ -5,12 +5,11 @@
 
 package cqrs
 
-
 // EventMessage is the interface that an event must implement.
 type EventMessage interface {
 
 	// StreamName returns the ID of the Aggregate that the event relates to
-	AggregateID() AggregateId
+	AggregateId() *AggregateId
 
 	// GetHeaders returns the key value collection of headers for the event.
 	//
@@ -36,7 +35,7 @@ type EventMessage interface {
 
 // EventDescriptor is an implementation of the event message interface.
 type EventDescriptor struct {
-	id        AggregateId
+	id        *AggregateId
 	event     interface{}
 	headers   map[string]interface{}
 	version   int
@@ -44,47 +43,46 @@ type EventDescriptor struct {
 }
 
 // NewEventMessage returns a new event descriptor
-func NewEventMessage(aggregateID AggregateId, event interface{}, version int, committed bool) *EventDescriptor {
+func NewEventMessage(aggregateID *AggregateId, event interface{}, version int, committed bool) *EventDescriptor {
 	return &EventDescriptor{
-		id:      aggregateID,
-		event:   event,
-		headers: make(map[string]interface{}),
-		version: version,
+		id:        aggregateID,
+		event:     event,
+		headers:   make(map[string]interface{}),
+		version:   version,
 		committed: committed,
 	}
 }
 
 // EventType returns the name of the event type as a string.
-func (c *EventDescriptor) EventType() string {
-	return typeOf(c.event)
+func (t *EventDescriptor) EventType() string {
+	return typeOf(t.event)
 }
 
-// StreamName returns the ID of the Aggregate that the event relates to.
-func (c *EventDescriptor) AggregateID() AggregateId {
-	return c.id
+// AggregateId returns the AggregateId
+func (t *EventDescriptor) AggregateId() *AggregateId {
+	return t.id
 }
 
 // GetHeaders returns the headers for the event.
-func (c *EventDescriptor) GetHeaders() map[string]interface{} {
-	return c.headers
+func (t *EventDescriptor) GetHeaders() map[string]interface{} {
+	return t.headers
 }
 
 // SetHeader sets the value of the header specified by the key
-func (c *EventDescriptor) SetHeader(key string, value interface{}) {
-	c.headers[key] = value
+func (t *EventDescriptor) SetHeader(key string, value interface{}) {
+	t.headers[key] = value
 }
 
 // Event the event payload of the event message
-func (c *EventDescriptor) Event() interface{} {
-	return c.event
+func (t *EventDescriptor) Event() interface{} {
+	return t.event
 }
 
 // number returns the version of the event
-func (c *EventDescriptor) Version() int {
-	return c.version
+func (t *EventDescriptor) Version() int {
+	return t.version
 }
 
-func (c *EventDescriptor) Committed() bool {
-	return c.committed
+func (t *EventDescriptor) Committed() bool {
+	return t.committed
 }
-

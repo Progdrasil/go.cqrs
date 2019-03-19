@@ -25,7 +25,7 @@ type SomeOtherEvent struct {
 	OrderID string
 }
 
-func NewTestEventMessage(id AggregateId) *EventDescriptor {
+func NewTestEventMessage(id *AggregateId) *EventDescriptor {
 	ev := &SomeEvent{Item: NewUUID(), Count: rand.Intn(100)}
 	return NewEventMessage(id, ev, 0, false)
 }

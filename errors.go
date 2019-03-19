@@ -27,7 +27,7 @@ func (e *ErrConcurrencyViolation) Error() string {
 }
 
 // ErrUnauthorized is returned when a request to the repository is not authorized
-type ErrUnauthorized struct {}
+type ErrUnauthorized struct{}
 
 func (e *ErrUnauthorized) Error() string {
 	return "Not authorized."
@@ -59,7 +59,7 @@ type ErrAggregateNotFound struct {
 }
 
 func (e *ErrAggregateNotFound) Error() string {
-	return fmt.Sprintf("Could not find any aggregate of type %s with aggregateId %s",
+	return fmt.Sprintf("Could not find any aggregate of type %s with AggregateId %s",
 		e.AggregateType,
 		e.AggregateID)
 }
@@ -108,4 +108,3 @@ type ErrBadRequest struct {
 func (e ErrBadRequest) Error() string {
 	return "Bad request."
 }
-

@@ -20,16 +20,16 @@ type SomeCommand struct {
 	Count int
 }
 
-func NewSomeCommandMessage(id AggregateId) *CommandDescriptor {
+func NewSomeCommandMessage(id *AggregateId) *CommandDescriptor {
 	ev := &SomeCommand{Item: NewUUID(), Count: rand.Intn(100)}
 	return NewCommandMessage(id, ev)
 }
 
 type SomeOtherCommand struct {
-	OrderID AggregateId
+	OrderID *AggregateId
 }
 
-func NewSomeOtherCommandMessage(id AggregateId) *CommandDescriptor {
+func NewSomeOtherCommandMessage(id *AggregateId) *CommandDescriptor {
 	ev := &SomeOtherCommand{id}
 	return NewCommandMessage(id, ev)
 }

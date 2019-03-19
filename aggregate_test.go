@@ -31,7 +31,7 @@ func (s *AggregateBaseSuite) TestIncrementVersion(c *C) {
 
 func (s *AggregateBaseSuite) TestTrackOneChange(c *C) {
 	ev := NewTestEventMessage(NewAggregateId())
-	agg := NewSomeAggregate(ev.AggregateID())
+	agg := NewSomeAggregate(ev.AggregateId())
 
 	agg.TrackChange(ev)
 
@@ -65,7 +65,7 @@ type SomeAggregate struct {
 	events []EventMessage
 }
 
-func NewSomeAggregate(id AggregateId) Aggregate {
+func NewSomeAggregate(id *AggregateId) Aggregate {
 	return &SomeAggregate{
 		AggregateBase: NewAggregateBase(id),
 	}
@@ -84,7 +84,7 @@ type SomeOtherAggregate struct {
 	changes []EventMessage
 }
 
-func NewSomeOtherAggregate(id AggregateId) Aggregate {
+func NewSomeOtherAggregate(id *AggregateId) Aggregate {
 	return &SomeOtherAggregate{
 		AggregateBase: NewAggregateBase(id),
 	}

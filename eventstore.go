@@ -31,7 +31,6 @@ type StreamWriter interface {
 	Append(expectedVersion *int, events ...EventMessage) error
 }
 
-
 type EventStore interface {
 	StreamReader(streamName string) StreamReader
 	StreamWriter(streamName string) StreamWriter
@@ -39,7 +38,7 @@ type EventStore interface {
 
 // Event encapsulates the data of an domain event.
 //
-// EventStreamID is the aggregateId returned in the event atom response.
+// EventStreamID is the AggregateId returned in the event atom response.
 // EventNumber represents the stream version for this event.
 // EventType describes the event type.
 // EventID is the guid of the event.
@@ -50,7 +49,7 @@ type Event struct {
 	EventStreamID string      `json:"eventStreamId,omitempty"`
 	EventNumber   int         `json:"eventNumber,omitempty"`
 	EventType     string      `json:"eventType,omitempty"`
-	EventID       AggregateId      `json:"eventId,omitempty"`
+	EventID       AggregateId `json:"eventId,omitempty"`
 	Data          interface{} `json:"data"`
 	Links         []Link      `json:"links,omitempty"`
 	MetaData      interface{} `json:"metadata,omitempty"`
@@ -91,7 +90,7 @@ func NewEvent(eventID AggregateId, eventType string, data interface{}, meta inte
 
 	e.EventID = eventID
 	if eventID.Nil() {
-		e.EventID = NewAggregateId()
+		e.EventID = *NewAggregateId()
 	}
 
 	e.EventType = eventType
@@ -103,5 +102,3 @@ func NewEvent(eventID AggregateId, eventType string, data interface{}, meta inte
 	e.MetaData = meta
 	return e
 }
-
-

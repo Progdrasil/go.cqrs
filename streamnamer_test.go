@@ -28,7 +28,9 @@ func (s *DelegateStreamNamerSuite) TestNewDelegateStreamNamer(c *C) {
 
 func (s *DelegateStreamNamerSuite) TestCanRegisterStreamNameDelegate(c *C) {
 
-	err := s.namer.RegisterDelegate(func(a Aggregate) string { return typeOf(a) + a.AggregateID().String() },
+	err := s.namer.RegisterDelegate(func(a Aggregate) string {
+		return typeOf(a) + a.AggregateID().String()
+	},
 		&SomeAggregate{},
 	)
 	c.Assert(err, IsNil)

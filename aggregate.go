@@ -7,39 +7,41 @@ package cqrs
 
 const NIL = "IT_YOONO_NIL"
 
-type AggregateId string
-
-func NewAggregateId() AggregateId {
-	return AggregateId(NewUUID())
+type AggregateId struct {
+	id string
 }
 
-func NewAggregateIdFromString(id string) AggregateId {
-	return AggregateId(id)
+func NewAggregateId() *AggregateId {
+	return &AggregateId{NewUUID()}
 }
 
-func NewAggregateIdNil() AggregateId {
-	return AggregateId(NIL)
+func NewAggregateIdNil() *AggregateId {
+	return &AggregateId{id: NIL}
 }
 
-func (a AggregateId) String() string {
-	return string(a)
+func NewAggregateIdFromString(id string) *AggregateId {
+	return &AggregateId{id}
 }
 
-func (a AggregateId) NotNil() bool {
-	return a != NIL
+func (a *AggregateId) String() string {
+	return a.id
 }
 
-func (a AggregateId) Nil() bool {
-	return a == NIL
+func (a *AggregateId) NotNil() bool {
+	return a.id != NIL
 }
 
-func (a AggregateId) Equals(id AggregateId) bool {
+func (a *AggregateId) Nil() bool {
+	return a.id == NIL
+}
+
+func (a *AggregateId) Equals(id AggregateId) bool {
 	return a.String() == id.String()
 }
 
 //Aggregate is the interface that all aggregates should implement
 type Aggregate interface {
-	AggregateID() AggregateId
+	AggregateID() *AggregateId
 	OriginalVersion() int
 	CurrentVersion(int) int
 	IncrementVersion(int)
@@ -62,21 +64,22 @@ type AggregateBase struct {
 }
 
 // NewAggregateBase contructs a new AggregateBase.
-func NewAggregateBase(id AggregateId) *AggregateBase {
+func NewAggregateBase(id *AggregateId) *AggregateBase {
+
 	return &AggregateBase{
-		id:      &id,
+		id:      id,
 		changes: []EventMessage{},
 		version: -1,
 	}
 }
 
 // StreamName returns the StreamName
-func (a *AggregateBase) AggregateID() AggregateId {
+func (a *AggregateBase) AggregateID() *AggregateId {
 	if a.id == nil {
 		return NewAggregateIdNil()
 	}
 
-	return *a.id
+	return a.id
 }
 
 // OriginalVersion returns the version of the aggregate as it was when it was
